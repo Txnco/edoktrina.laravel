@@ -1,0 +1,1 @@
+<button class="btn btn-info {{$class}}" id="{{$id}}">  {{$buttonText}} </button>
