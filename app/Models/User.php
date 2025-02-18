@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password',
         'pass_token',
         'pass_expiry',
-        'active',
+        'active'
     ];
 
     /**
@@ -57,6 +57,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'pass_expiry' => 'datetime',
+            'active' => 'integer',
         ];
     }
 }

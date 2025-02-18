@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Šalabahter'),
 
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -123,5 +125,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'base_path' => env('BASE_PATH'),
 
 ];

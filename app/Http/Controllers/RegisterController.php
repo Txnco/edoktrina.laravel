@@ -4,14 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\EmailService;
-use App\Models\User; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\User; //Interaction with database
+use App\Models\Verification; //Interaction with database
 
 class RegisterController extends Controller
 {
     public function showRegistrationForm() {
         return view('auth.register');
+    }
+
+    public function showVerificationForm($public_id) {
+        $user = User::where('public_id', $public_id)->first();
+        if($user->active == 1){
+            return redirect()->route('login');
+        }
+        return view('auth.verification', ['public_id' => $public_id]);
     }
 
     protected $emailService;
@@ -52,29 +63,53 @@ class RegisterController extends Controller
         $info = $this->sendVerificationCode($user);
 
         if($info != "success"){
+            $user->delete();
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Registration failed! Failed to send the code to your email.',
-                'error' => $info 
+                'error' => $info,
             ]);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Registration successful! A code has been sent to your email.',
-            'public_id' => $public_id,
-            'info' => $info
-        ]);
+        return redirect()->route('verification', ['public_id' => $public_id]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Registration successful! A code has been sent to your email.',
+        //     'public_id' => $public_id,
+        //     'info' => $info
+        // ]);
     }
 
-    public function verification($public_id) {
-        $user = User::where('public_id', $public_id)->first();
+    private function sendVerificationCode($user) {
+        try {
+            $user->verification_code = rand(100000, 999999); 
 
-        if (!$user) {
-            return redirect()->route('id_error');
+            Verification::create([
+                'verification_code' => $user->verification_code,
+                'expiry_time' => date('Y-m-d H:i:s', strtotime('+1 day')),
+                'user_id' => $user->id
+            ]);
+
+            $to = $user->email;
+            $subject = 'Welcome to Salabahter - Verification Code';
+
+            $subtitle='Hvala na registraciji!';
+            $title = 'Vaš kod za verifikaciju';
+            $body_text = $user->first_name . ' ' . $user->last_name . ' ,dobrodošli na Šalabahter, ovdje se nalazi Vaš verifikacijski kod. Molimo Vas unesite kod na registraciji.' ;
+            
+            $email_template = base_path(config('mail.email_template_with_button'));
+            $data = [   'BODY_TEXT' => $body_text,
+                        'CODE' => $user->verification_code,
+                        'TITLE' => $title,
+                        'SUBTITLE' => $subtitle,
+                    ];
+
+            $info = $this->emailService->send($to, $subject, $data, $email_template);
+            return "success";
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-
-        return view('auth.verify', ['public_id' => $public_id]);
     }
 
     public function verifyUser(Request $request) {
@@ -92,37 +127,26 @@ class RegisterController extends Controller
 
         $user = User::where('public_id', $request->public_id)->first();
 
-        if ($user->verification_code === $request->code) {
-            $user->active = 1;
-            $user->save();
+        $verification = Verification::where('user_id', $user->id)->first();
 
+        
+        if ((int)$verification->verification_code === (int)$request->code && $verification->expiry_time > date('Y-m-d H:i:s')) {
+            $user->update(['active' => 1]);
+
+            Auth::login($user);
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
-        } elseif ($user->verification_code !== $request->code) {
+        } elseif ((int)$verification->verification_code === (int)$request->code && $verification->expiry_time < date('Y-m-d H:i:s')) {
             return response()->json([
-                'status' => 'wrong_code'
+                'status' => 'code_expired'
             ]);
         } else {
             return response()->json([
-                'status' => 'code_expired'
+                'status' => 'wrond_code'
             ]);
         }
     }
 
-    private function sendVerificationCode($user) {
-       
-        $user->verification_code = rand(100000, 999999); 
-
-        $to = $user->email;
-        $subject = 'Welcome to Salabahter';
-        $body = '<p>Dear' . $user->first_name . ',</p><p>Thank you for registering!</p>';
-        $altBody = 'Dear ' . $user->first_name . ', Thank you for registering!';
-        $data = ['first_name' =>  $user->first_name];
-
-        $this->emailService->send($to, $subject, $body, $altBody, $data);
-
-
-        return "success";
-    }
+ 
 }

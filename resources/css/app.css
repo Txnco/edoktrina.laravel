@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Light Theme Autofill Styles */
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus,
+[data-theme="light"] input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+
+[data-theme="light"] input:-moz-autofill,
+[data-theme="light"] input:-moz-autofill:hover,
+[data-theme="light"] input:-moz-autofill:focus,
+[data-theme="light"] input:-moz-autofill:active {
+    box-shadow: 0 0 0 30px white inset !important;
+    text-fill-color: #000 !important;
+}
+
+[data-theme="light"] input:-ms-autofill,
+[data-theme="light"] input:-ms-autofill:hover,
+[data-theme="light"] input:-ms-autofill:focus,
+[data-theme="light"] input:-ms-autofill:active {
+    box-shadow: 0 0 0 30px white inset !important;
+    text-fill-color: #000 !important;
+}
+
+/* Dark Theme Autofill Styles */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus,
+[data-theme="dark"] input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #2d3748 inset !important; /* Adjust to match your dark background */
+    -webkit-text-fill-color: #fff !important;
+}
+
+[data-theme="dark"] input:-moz-autofill,
+[data-theme="dark"] input:-moz-autofill:hover,
+[data-theme="dark"] input:-moz-autofill:focus,
+[data-theme="dark"] input:-moz-autofill:active {
+    box-shadow: 0 0 0 30px #2d3748 inset !important;
+    text-fill-color: #fff !important;
+}
+
+[data-theme="dark"] input:-ms-autofill,
+[data-theme="dark"] input:-ms-autofill:hover,
+[data-theme="dark"] input:-ms-autofill:focus,
+[data-theme="dark"] input:-ms-autofill:active {
+    box-shadow: 0 0 0 30px #2d3748 inset !important;
+    text-fill-color: #fff !important;
+}
