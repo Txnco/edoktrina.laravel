@@ -42,10 +42,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => $request->all(),
-                'message' => $validator->errors()
-            ], 422);
+            return back()->withErrors($validator)->withInput();
         }
 
         $timestamp = time();
@@ -65,20 +62,14 @@ class RegisterController extends Controller
         if($info != "success"){
             $user->delete();
 
-            return response()->json([
+            return back()->withErrors([
                 'status' => 'error',
-                'message' => 'Registration failed! Failed to send the code to your email.',
-                'error' => $info,
-            ]);
+                'message' => 'Registracija neuspješna! Neuspješno slanje verifikacije na Vašu email adresu.',
+                'info' => $info
+            ])->withInput();
         }
 
         return redirect()->route('verification', ['public_id' => $public_id]);
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Registration successful! A code has been sent to your email.',
-        //     'public_id' => $public_id,
-        //     'info' => $info
-        // ]);
     }
 
     private function sendVerificationCode($user) {
@@ -119,10 +110,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()
-            ], 422);
+            return back()->withErrors($validator)->withInput();
         }
 
         $user = User::where('public_id', $request->public_id)->first();

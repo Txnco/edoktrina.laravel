@@ -23,17 +23,28 @@
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                   @csrf
                   <div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
-                      <x-forms.input type="text" id="first_name" name="first_name" placeholder="Ime" label="Ime" />
-                      <x-forms.input type="text" id="last_name" name="last_name" placeholder="Prezime" label="Prezime" />
+                      <x-forms.input type="text" id="first_name" name="first_name" placeholder="Ime" label="Ime" value="{{ old('first_name') }}"/>
+                      <x-forms.input type="text" id="last_name" name="last_name" placeholder="Prezime" label="Prezime" value="{{ old('last_name') }}" />
                   </div>
               
-                  <x-forms.input type="email" id="email" name="email" placeholder="Email" label="Email" />
+                  <x-forms.input type="email" id="email" name="email" placeholder="Email" label="Email" value="{{ old('email') }}" />
               
                   <div class="grid grid-cols-1 gap-6 mt-1 md:grid-cols-2">
                       <x-forms.input type="password" id="password" name="password" placeholder="Lozinka" label="Lozinka" />
                       <x-forms.input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ponovi lozinku" label="Ponovi lozinku" />
                   </div>
-              
+
+                    @if ($errors->any())
+                        <div class="alert alert-error mt-4">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li> 
+                                    {{-- NEED FOR DEBUGGING --}}
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                
                   <div class="mt-8">
                       <x-buttons.primary class="w-full text-lg" type="submit" id="submit" buttonText="Registriraj se" />
                   </div>
