@@ -72,6 +72,9 @@
     </div>
 </section>
 
+@if(session('message'))
+  <x-modals.success-modal-link id='successModal' heading='Uspješna verifikacija' text="{{ session('message') }}" link='{{ route("login") }}' action='Prijavi se' />
+@endif
 
 <script>
     $(document).ready(function() {
@@ -161,6 +164,11 @@
       form.submit();
     }
   });
+
+    @if(session('message'))
+        $('#successModal').addClass('modal-open');
+    @endif
+
 });
 
 </script>

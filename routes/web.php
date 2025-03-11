@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Requests\CustomEmailVerification;
+
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('home');
@@ -18,14 +22,44 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register']);
-    Route::get('verification/{public_id}', [RegisterController::class, 'showVerificationForm'])->name('verification');
-    Route::post('verification', [RegisterController::class, 'verifyUser'])->name('verifyUser');
+    // Route::get('verification/{public_id}', [RegisterController::class, 'showVerificationForm'])->name('verification');
+    // Route::post('verification', [RegisterController::class, 'verifyUser'])->name('verifyUser');
+    
+    Route::get('/email/verify', function (Request $request) {
+        $user = $request->session()->get('user');
+        if ($user) {
+            return view('auth.verify-email');
+        }
+        return redirect('/login');
+     })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (CustomEmailVerification $request) {
+        $request->fulfill();
+        return redirect('/login')->with(['message' => 'Vaš račun je uspješno potvrđen!']); 
+    })->middleware(['signed'])->name('verification.verify');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('profile', [ProfileController::class, 'showProfile'])->name('user.profile');
-  
+    Route::get('dashboard', [ProfileController::class, 'showDashboard'])->name('user.dashboard');
+    
 });
+
+
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $user = $request->session()->get('user');
+    if ($user->email_verified_at === null) {
+        $user->sendEmailVerificationNotification();
+
+        if ($request->wantsJson()) {
+            return response()->json(['status' => 'success', 'message' => 'Verification email sent.']);
+        }
+
+        return view('auth.verify-email');
+    }
+    return view('login');
+})->middleware(['throttle:6,1'])->name('verification.send');
 
 
 

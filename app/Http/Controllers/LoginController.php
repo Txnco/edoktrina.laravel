@@ -36,10 +36,10 @@ class LoginController extends Controller
             $user = Auth::user();
     
             // Check if user is not active (not verified)
-            if (!$user->active) {
-                Auth::logout(); // Logout the user
-                
-                return redirect()->route('verification', ['public_id' => $user->public_id])->withErrors(['email' => 'Vaš račun nije potvrđen. Molimo potvrdite svoju e-mail adresu.']);
+            if ($user->email_verified_at === null) {
+                Auth::logout();
+                $request->session()->put('user', $user);
+                return redirect()->route('verification.notice')->withErrors(['email' => 'Vaš račun nije potvrđen. Molimo potvrdite svoju e-mail adresu.']);                
             }
     
             return redirect()->intended('/');

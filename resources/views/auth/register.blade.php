@@ -17,21 +17,21 @@
                 </div>
 
                 <p class="mt-4 text-gray-500 dark:text-gray-400 text-xl">
-                   Dobrodošli, molimo Vas registrirajte se!
+                   {{ __('Dobrodošli, molimo Vas registrirajte se!') }}
                 </p>
 
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                   @csrf
                   <div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
-                      <x-forms.input type="text" id="first_name" name="first_name" placeholder="Ime" label="Ime" value="{{ old('first_name') }}"/>
-                      <x-forms.input type="text" id="last_name" name="last_name" placeholder="Prezime" label="Prezime" value="{{ old('last_name') }}" />
+                      <x-forms.input type="text" id="first_name" name="first_name" placeholder="{{ __('Ime') }}" label="{{ __('Ime') }}" value="{{ old('first_name') }}"/>
+                      <x-forms.input type="text" id="last_name" name="last_name" placeholder="{{ __('Prezime') }}" label="{{ __('Prezime') }}" value="{{ old('last_name') }}" />
                   </div>
               
                   <x-forms.input type="email" id="email" name="email" placeholder="Email" label="Email" value="{{ old('email') }}" />
               
                   <div class="grid grid-cols-1 gap-6 mt-1 md:grid-cols-2">
-                      <x-forms.input type="password" id="password" name="password" placeholder="Lozinka" label="Lozinka" />
-                      <x-forms.input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ponovi lozinku" label="Ponovi lozinku" />
+                      <x-forms.input type="password" id="password" name="password" placeholder="{{ __('Lozinka') }}" label="{{ __('Lozinka') }}" />
+                      <x-forms.input type="password" id="password_confirmation" name="password_confirmation" placeholder="{{ __('Ponovi lozinku') }}" label="{{ __('Ponovi lozinku') }}" />
                   </div>
 
                     @if ($errors->any())
@@ -46,12 +46,12 @@
                     @endif
                 
                   <div class="mt-8">
-                      <x-buttons.primary class="w-full text-lg" type="submit" id="submit" buttonText="Registriraj se" />
+                      <x-buttons.primary class="w-full text-lg" type="submit" id="submit" buttonText="{{ __('Registriraj se') }}" />
                   </div>
                 </form>
 
                 
-                <div class="divider">ILI</div>
+                <div class="divider">{{ __('ILI') }}</div>
 
                 <a href="#" class="flex items-center justify-center mt-4 transition-colors duration-300 transform border border-base-300 rounded-lg bg-base-100 text-base-content hover:bg-base-200">
                     <div class="px-4 py-2">
@@ -63,13 +63,13 @@
                         </svg>
                     </div>
                     <span class="flex-1 px-4 py-3 text-center font-normal">
-                        Registrirajte se preko Google računa
+                        {{ __('Registrirajte se preko Google računa') }}
                     </span>
                 </a>
              
                 <div class="text-center mt-4 font-regular bg-base-100 text-base-content">
-                    Već imate račun? 
-                    <a href="{{ config('app.url') }}/login" class="text-primary font-bold">Prijavite se</a>
+                    {{ __('Već imate račun?') }}
+                    <a href="{{ config('app.url') }}/login" class="text-primary font-bold">{{ __('Prijavite se') }}</a>
                 </div>
                   
                 
