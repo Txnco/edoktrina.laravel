@@ -12,6 +12,8 @@
     <!-- jQuery Validation Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
+    <!-- Add this in your layout file (e.g., layouts/auth.blade.php) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 </head>
