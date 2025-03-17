@@ -24,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'google_id',
+        'email_verified_at',
     ];
 
     /**
@@ -43,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * Get the attributes that should be cast.

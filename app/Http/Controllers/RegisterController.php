@@ -28,6 +28,7 @@ class RegisterController extends Controller
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
+        
         $username = $this->generateUsername($request->first_name, $request->last_name);
 
         $user = User::create([
@@ -39,7 +40,7 @@ class RegisterController extends Controller
         ]);
 
         $user->sendEmailVerificationNotification();
-
+        
         return redirect()->route('verification.notice');
     }
 

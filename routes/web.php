@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Requests\CustomEmailVerification;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::get('/email/verification-notification', fn() => redirect('/login')->with('error', 'Cannot access directly.'));
 Route::post('/email/verification-notification', function (Request $request) {
     $user = $request->session()->get('user');
     if ($user->email_verified_at === null) {
@@ -61,5 +62,9 @@ Route::post('/email/verification-notification', function (Request $request) {
     return view('login');
 })->middleware(['throttle:6,1'])->name('verification.send');
 
+Route::controller(SocialiteController::class)->group(function(){
+    Route::get('auth/google','googleLogin')->name('auth.google');
+    Route::get('auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
 
+});
 
