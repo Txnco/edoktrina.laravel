@@ -5,8 +5,6 @@
 <!-- Main Layout -->
 <div class="min-h-screen bg-base-100">
 
-      <!-- Main Content -->
-      <div class="drawer-content flex flex-col lg:ml-64 mt-16 p-6">
         <!-- Content Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div class="card bg-base-100 shadow-sm">
@@ -58,10 +56,7 @@
             </div>
           </div>
         </div>
-      </div>
 
-    <!-- Main Content -->
-    <div class="ml-64 p-8">
         <!-- Navbar -->
         <div class="navbar bg-base-100 mb-8 p-0">
             <div class="flex-1">
@@ -143,7 +138,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 <script>

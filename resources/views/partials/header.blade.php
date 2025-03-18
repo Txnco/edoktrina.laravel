@@ -1,27 +1,13 @@
 
-  <style>
-    /* Custom CSS for first-letter capitalization */
-    .capitalize-first::first-letter {
-      text-transform: uppercase;
-    }
-
-    /* Sticky header with bottom shadow */
-    .sticky-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-  </style>
-
 <header>
-  <nav class="navbar bg-base-200 sticky-header">
-      <div class="container mx-auto flex justify-between items-center px-4">
-          <!-- Logo -->
-          <a href="/" class="btn btn-ghost text-2xl font-bold">Šalabahter</a>
-
+  <nav class="navbar bg-base-200 sticky top-0 z-50 border-b h-16 shadow-md">
+        <div class="navbar-start">
+            <!-- Logo -->
+            <a href="/" class="btn btn-ghost text-2xl font-bold">Šalabahter</a>
+        </div>
+            
           <!-- Desktop Links -->
-          <div class="hidden md:flex space-x-4">
+          <div class="hidden lg:flex space-x-4 navbar-center">
               <a href="/" class="btn btn-ghost text-base capitalize-first hover:text-primary-focus">Početna</a>
               
               <!-- Dropdown for Učenje -->
@@ -39,67 +25,27 @@
               <a href="/o-nama" class="btn btn-ghost text-base capitalize-first hover:text-primary-focus">O nama</a>
           </div>
 
-          @guest
-              <!-- Right Buttons -->
-              <div class="hidden md:flex space-x-2">
-                  <a href="/login" class="btn btn-ghost text-base capitalize-first hover:text-primary-focus">Prijava</a>
-                  <a href="{{ route('register') }}" class="btn btn-primary text-base">Registracija</a>
-              </div>
-          @endguest
+        <div class="navbar-end">
+            @guest
+                <!-- Right Buttons -->
+                <div class="hidden md:flex space-x-2">
+                    <a href="/login" class="btn btn-ghost text-base capitalize-first hover:text-primary-focus">Prijava</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary text-base">Registracija</a>
+                </div>
+            @endguest
 
-          @auth
-              <!-- Profile Dropdown (Desktop) -->
-              <div class="dropdown dropdown-end hidden md:block">
-                  @php
-                      $user = auth()->user();
-                      $profilePhoto = $user->profile_photo_url;
-                  @endphp
-                  <label tabindex="0" class="btn btn-ghost btn-circle avatar flex items-center justify-center">
-                      @if($profilePhoto)
-                          <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
-                              <img src="{{ $profilePhoto }}" alt="Profile Photo" class="object-cover w-full h-full cursor-pointer">
-                          </div>
-                      @else
-                          <div class="avatar online placeholder w-10 h-10">
-                              <div class="bg-neutral text-neutral-content rounded-full">
-                                  <span class="text-xl">{{ strtoupper(substr($user->first_name, 0, 1)) }}{{ strtoupper(substr($user->last_name, 0, 1)) }}</span>
-                              </div>
-                          </div>
-                      @endif
-                  </label>
-                  <ul tabindex="0" class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-                      <li class="m-1">
-                          <a href="{{ route('user.profile') }}" class="flex items-center justify-center gap-2">
-                              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="gray" viewBox="0 0 24 24">
-                                  <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
-                              </svg>
-                              <span class="text-center">Moj profil</span>
-                          </a>
-                      </li>
-                      <li class="m-1">
-                          <a class="btn btn-error btn-sm text-white flex items-center justify-center gap-2" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
-                              </svg>
-                              <span>Odjava</span>
-                          </a>
-                      </li>
-                  </ul>
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                      @csrf
-                  </form>
-              </div>
-          @endauth
+            @include('partials.user-dropdown')
+            
+            <!-- Mobile Menu Button -->
+            <div class="lg:hidden">
+                <button id="mobile-menu-button" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-          <!-- Mobile Menu Button -->
-          <div class="md:hidden">
-              <button id="mobile-menu-button" class="btn btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                  </svg>
-              </button>
-          </div>
-      </div>
 
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="fixed inset-y-0 right-0 w-64 bg-base-100 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
@@ -167,25 +113,49 @@
                   @endguest
 
                   @auth
-                    <li class="m-1">
-                      <a href="{{ route('user.profile') }}" class="flex items-center justify-center gap-2">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="gray" viewBox="0 0 24 24">
+                    <!-- Profile -->
+                    <li>
+                        <a href="{{ route('user.profile') }}" class="hover:bg-base-200 mt-1">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-center">Moj profil</span>
-                      </a>
+                            Moj profil
+                        </a>
                     </li>
-                      <li>
-                        <a class="btn btn-error btn-sm text-white flex items-center justify-center gap-2" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+
+                    <!-- Dashboard -->
+                    <li>
+                    <a href="{{ route('user.dashboard') }}" class="hover:bg-base-200 mt-1">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                        </svg>
+                        Upravljačka ploča
+                    </a>
+                </li>
+                    
+                    <!-- Settings -->
+                    <li>
+                        <a href="" class="hover:bg-base-200 mt-1">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M9.586 2.586A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2v.089l.473.196.063-.063a2.002 2.002 0 0 1 2.828 0l1.414 1.414a2 2 0 0 1 0 2.827l-.063.064.196.473H20a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-.089l-.196.473.063.063a2.002 2.002 0 0 1 0 2.828l-1.414 1.414a2 2 0 0 1-2.828 0l-.063-.063-.473.196V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.089l-.473-.196-.063.063a2.002 2.002 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.827l.063-.064L4.089 15H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h.09l.195-.473-.063-.063a2 2 0 0 1 0-2.828l1.414-1.414a2 2 0 0 1 2.827 0l.064.063L9 4.089V4a2 2 0 0 1 .586-1.414ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/>
+                            </svg>
+                            Postavke
+                        </a>
+                    </li>
+                    
+                    <!-- Logout -->
+                    <li>
+                        <a class="btn btn-error btn-sm text-white text-left justify-start mt-1" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
                             </svg>
-                            <span>Odjava</span>
+                            Odjava
                         </a>
-                      </li>
-                      <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="hidden">
-                          @csrf
-                      </form>
+                    </li>
+                    
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
                   @endauth
               </ul>
 
