@@ -18,20 +18,29 @@ class SocialiteController extends Controller
     }
 
     public function googleAuthentication() {
-        try{
+        try {
             $googleUser = Socialite::driver('google')->stateless()->user();
-            $user = User::where('google_id', $googleUser->id)->first();
-
-            $first_name = (isset($googleUser->user['given_name']) && !empty($googleUser->user['given_name'])) ? $googleUser->user['given_name'] : '';
-            $last_name = (isset($googleUser->user['family_name']) && !empty($googleUser->user['family_name'])) ? $googleUser->user['family_name'] : '';
-
-            $username = $this->generateUsername($first_name, $last_name);
-
-            if($user){
-                Auth::login($user);
-                return redirect()->route('home');
+    
+            // First, check if a user already exists with this email
+            $user = User::where('email', $googleUser->user['email'])->first();
+    
+            // Extract user's first and last names safely
+            $first_name = $googleUser->user['given_name'] ?? '';
+            $last_name = $googleUser->user['family_name'] ?? '';
+    
+            if ($user) {
+                // Update existing user with Google ID if not already set
+                if (!$user->google_id) {
+                    $user->google_id = $googleUser->id;
+                    $user->email_verified_at = now(); // Optional
+                    $user->save();
+                }
             } else {
-                $userData = User::create([
+                // Generate username (your existing logic)
+                $username = $this->generateUsername($first_name, $last_name);
+    
+                // Create a new user clearly if none exists
+                $user = User::create([
                     'username' => $username,
                     'first_name' => $first_name,
                     'last_name' =>  $last_name,
@@ -40,32 +49,45 @@ class SocialiteController extends Controller
                     'password' => null,
                     'google_id' => $googleUser->id,
                 ]);
-                if($userData){
-                    Auth::login($userData);
-                    return redirect()->route('home');
+    
+                // Assign default role explicitly
+                if ($user->wasRecentlyCreated) {
+                    $user->assignRole('user');
                 }
             }
+    
+            // Finally, login user clearly
+            Auth::login($user);
+    
+            return redirect()->route('home');
+        } catch (Exception $e) {
+            return redirect()->route('login')->withErrors([
+                'unsuccessful' => 'Prijava preko Google računa nije uspela.'
+            ]);
         }
-        catch(Exception $e){
-            return redirect()->route('login')->withErrors(['unsuccessful' => 'Prijava preko Google računa nije uspela.']);
-        }
-        
     }
+    
 
-    private function generateUsername($firstName, $lastName){
-        $firstNamePart = substr($firstName, 0, min(4, strlen($firstName)));
-        $lastNamePart = substr($lastName, 0, min(5, strlen($lastName)));
-
-        $baseUsername = strtolower($firstNamePart . $lastNamePart);
+    private function generateUsername($firstName, $lastName)
+    {
+        $firstName = strtolower(preg_replace('/\s+/', '', $firstName));
+        $lastName = strtolower(preg_replace('/\s+/', '', $lastName));
+    
+        $baseUsername = substr($firstName . $lastName, 0, 10);
+    
+        while (strlen($baseUsername) < 5) {
+            $baseUsername .= rand(0,9);
+        }
         $username = $baseUsername;
         $counter = 1;
-
+    
         while (User::where('username', $username)->exists()) {
-            $username = $baseUsername . $counter;
+            $suffix = (string)$counter;
+            $username = substr($baseUsername, 0, 10 - strlen($suffix)) . $suffix;
             $counter++;
         }
-
         return $username;
     }
+    
     
 }

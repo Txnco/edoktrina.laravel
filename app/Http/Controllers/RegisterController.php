@@ -39,6 +39,8 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('user');
+
         $user->sendEmailVerificationNotification();
         
         return redirect()->route('verification.notice');
@@ -164,21 +166,25 @@ class RegisterController extends Controller
     //     }
     // }
 
-    private function generateUsername($firstName, $lastName){
-        $firstNamePart = substr($firstName, 0, min(4, strlen($firstName)));
-        $lastNamePart = substr($lastName, 0, min(5, strlen($lastName)));
-
-        $baseUsername = strtolower($firstNamePart . $lastNamePart);
+    private function generateUsername($firstName, $lastName)
+    {
+        $firstName = strtolower(preg_replace('/\s+/', '', $firstName));
+        $lastName = strtolower(preg_replace('/\s+/', '', $lastName));
+    
+        $baseUsername = substr($firstName . $lastName, 0, 10);
+    
+        while (strlen($baseUsername) < 5) {
+            $baseUsername .= rand(0,9);
+        }
         $username = $baseUsername;
         $counter = 1;
-
+    
         while (User::where('username', $username)->exists()) {
-            $username = $baseUsername . $counter;
+            $suffix = (string)$counter;
+            $username = substr($baseUsername, 0, 10 - strlen($suffix)) . $suffix;
             $counter++;
         }
-
         return $username;
     }
-
  
 }

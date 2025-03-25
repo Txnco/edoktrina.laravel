@@ -10,47 +10,47 @@
       <input id="main-drawer" type="checkbox" class="drawer-toggle" />
       
       <!-- Main Content -->
-      <div class="drawer-content flex flex-col ml-10 mr-10 mt-20"> <!-- Added margin-top -->
+      <div class="drawer-content flex flex-col pl-10 pr-10 pt-20"> <!-- Added margin-top -->
           @yield('main-content')
       </div>
 
       <!-- Sidebar -->
       <div class="drawer-side lg:drawer-open !important">
           <label for="main-drawer" class="drawer-overlay lg:hidden"></label>
-            <div class="menu p-4 w-64 bg-base-200 text-base-content border-r border-base-300 min-h-[calc(100vh-4rem)] h-full lg:static pt-16 mt-0 flex flex-col justify-between">
+            <div class="menu p-4 w-64 bg-base-100 text-base-content border-r border-base-300 min-h-[calc(100vh-4rem)] h-full lg:static pt-16 mt-0 flex flex-col justify-between">
             <!-- Navigation Menu - Top Section -->
             <div>
-              <li class="menu-title mt-4">{{ __('Glavni izbornik') }}</li>
-              <li>
-                <a class="active hover:bg-base-300">
+              <li class="menu-title mt-4 text-base-content">{{ __('Glavni izbornik') }}</li>
+              <li class="mt-1 mb-1">
+                <a href="{{ route('admin.dashboard') }}" class="hover:bg-base-300 {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                   <x-heroicon-o-chart-pie class="w-6 h-6" />
                   {{ __('Kontrolna ploča') }}
                 </a>
               </li>
-              <li>
-                <a class="hover:bg-base-300">
+              <li class="mt-1 mb-1">
+                <a class="hover:bg-base-300 ">
                   <x-heroicon-o-chart-bar class="w-6 h-6" />
                   {{ __('Grafovi') }}
                   <span class="badge badge-primary badge-sm">Pro</span>
                 </a>
               </li>
-              <li>
-                <a class="hover:bg-base-300">
+              <li class="mt-1 mb-1">
+                <a class="hover:bg-base-300 ">
                   <x-heroicon-o-inbox class="w-6 h-6" />
                   {{ __('Poruke') }}
                   <span class="badge badge-secondary badge-sm">3</span>
                 </a>
               </li>
-              <li>
-                <a class="hover:bg-base-300">
+              <li class="mt-1 mb-1">
+                <a href="{{ route('admin.users') }}" class="hover:bg-base-300 {{ request()->routeIs('admin.users') ? 'active' : '' }}">
                   <x-heroicon-o-users class="w-6 h-6" />
                   {{ __('Korisnici') }}
                 </a>
               </li>
-              <li>
-                <a class="hover:bg-base-300">
-                  <x-heroicon-o-shopping-bag class="w-6 h-6" />
-                  {{ __('Prodaja') }}
+              <li class="mt-1 mb-1">
+                <a href="{{ route('admin.roles-permissions') }}" class="hover:bg-base-300">
+                  <x-heroicon-o-shield-check class="w-6 h-6" />
+                  {{ __('Uloge i dozvole') }}
                 </a>
               </li>
             </div>
@@ -93,5 +93,8 @@
         </label>
     </div>
 </div>
+
+
+
 
 @endsection

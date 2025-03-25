@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar bg-base-200 shadow-md fixed top-0 z-50  h-16">
+  <nav class="navbar bg-base-100 border-b border-base-300  fixed top-0 z-50  h-16">
       <div class="navbar-start">
          <!-- Mobile Menu Toggle -->
         <label for="main-drawer" class="btn btn-square btn-ghost lg:hidden">

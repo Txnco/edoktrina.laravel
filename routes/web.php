@@ -47,6 +47,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+        Route::get('users', [AdminDashboardController::class, 'showUsers'])->name('admin.users');
+        Route::get('roles-permissions', [AdminDashboardController::class, 'showRolesPermissions'])->name('admin.roles-permissions');
     });
     
     Route::get('{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
