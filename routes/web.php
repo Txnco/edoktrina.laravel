@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialiteController;
+
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Tutor\TutorDashboardController;
+
 use App\Http\Requests\CustomEmailVerification;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -41,9 +45,12 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('profile', [ProfileController::class, 'showProfile'])->name('user.profile');
-    Route::get('dashboard', [ProfileController::class, 'showDashboard'])->name('user.dashboard');
+    Route::middleware('role:admin')->group(function () {
+        Route::get('dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+    });
     
+    Route::get('{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
+
 });
 
 
@@ -68,3 +75,13 @@ Route::controller(SocialiteController::class)->group(function(){
 
 });
 
+
+
+Route::get('/test-role', function () {
+    return "Role middleware works!";
+})->middleware(['auth', 'role:admin']);
+
+Route::get('/middleware-debug', function () {
+    $kernel = app(\Illuminate\Contracts\Http\Kernel::class);
+    dd($kernel->getRouteMiddleware());
+});

@@ -115,7 +115,7 @@
                   @auth
                     <!-- Profile -->
                     <li>
-                        <a href="{{ route('user.profile') }}" class="hover:bg-base-200 mt-1">
+                        <a href="{{ route('user.profile', ['username' => $user->username]) }}" class="hover:bg-base-200 mt-1">
                             <x-heroicon-s-user-circle class="w-6 h-6" />
                             Moj profil
                         </a>
@@ -123,7 +123,7 @@
             
                      <!-- Dashboard -->
                      <li>
-                      <a href="{{ route('user.dashboard') }}" class="hover:bg-base-200 mt-1">
+                      <a href="{{ route('admin.dashboard') }}" class="hover:bg-base-200 mt-1">
                         <x-heroicon-s-chart-pie class="w-6 h-6" />
                           Upravljačka ploča
                       </a>
