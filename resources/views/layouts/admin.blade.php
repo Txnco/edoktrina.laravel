@@ -35,10 +35,9 @@
                 </a>
               </li>
               <li class="mt-1 mb-1">
-                <a class="hover:bg-base-300 ">
-                  <x-heroicon-o-inbox class="w-6 h-6" />
-                  {{ __('Poruke') }}
-                  <span class="badge badge-secondary badge-sm">3</span>
+                <a href="{{ route('admin.subjects') }}" class="hover:bg-base-300 {{ request()->routeIs('admin.subjects') ? 'active' : '' }}">
+                  <x-heroicon-o-book-open class="w-6 h-6" />
+                  {{ __('Predmeti') }}
                 </a>
               </li>
               <li class="mt-1 mb-1">

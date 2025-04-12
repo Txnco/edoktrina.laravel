@@ -48,7 +48,7 @@ class LoginController extends Controller
         // If authentication fails
         return back()->withErrors([
             'unsuccessful' => 'Navedeni podaci ne odgovaraju našim zapisima.',
-        ]);
+        ])->withInput();
     }
     
 

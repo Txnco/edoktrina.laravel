@@ -5,7 +5,7 @@
 <div class="max-w-md mx-auto my-8 p-6 bg-white rounded-lg shadow-lg ">
     <div class="mb-3 text-center">
         <a href="{{ config('app.url') }}"
-            class="text-7xl  font-bold text-center mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">Šalabahter</a>
+            class="text-7xl  font-bold text-center mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">{{ config('app.name') }}</a>
     </div>
     <p class="text-center text-gray-600">Molimo Vas provjerite Vašu e-poštu i kliknite na link kako bi ste potvrdili svoju e-poštu.</p>
 

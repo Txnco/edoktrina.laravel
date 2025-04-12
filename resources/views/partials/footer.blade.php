@@ -49,7 +49,7 @@
     
   
         <!-- Copyright -->
-        <p class="text-sm text-center">© 2023 Šalabahter. Sva prava pridržana.</p>
+        <p class="text-sm text-center">© 2023 {{ config('app.name') }}. Sva prava pridržana.</p>
       </div>
     </div>
   </footer>

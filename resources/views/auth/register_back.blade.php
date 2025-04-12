@@ -4,7 +4,7 @@
 <div class="max-w-md mx-auto my-8 p-6 bg-white rounded-lg shadow-lg ">
     <div class="mb-3 text-center">
         <a href="{{ config('app.url') }}"
-            class="text-7xl  font-bold text-center mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">Šalabahter</a>
+            class="text-7xl  font-bold text-center mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">{{ config('app.name') }}</a>
     </div>
     <h4
         class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-[#33186B] to-[#3F2A78] text-transparent bg-clip-text">

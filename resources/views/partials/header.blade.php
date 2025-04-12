@@ -3,7 +3,7 @@
   <nav class="navbar bg-base-200 sticky top-0 z-50  h-16 shadow-md">
         <div class="navbar-start">
             <!-- Logo -->
-            <a href="/" class="btn btn-ghost text-2xl font-bold">Šalabahter</a>
+            <a href="/" class="btn btn-ghost text-2xl font-bold">{{ config('app.name') }}</a>
         </div>
             
           <!-- Desktop Links -->

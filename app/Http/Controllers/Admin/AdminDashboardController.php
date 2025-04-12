@@ -53,5 +53,6 @@ class AdminDashboardController extends Controller
         return round((($currentMonthUsers - $lastMonthUsers) / $lastMonthUsers) * 100, 1) . '%';
     }
 
+  
 
 }

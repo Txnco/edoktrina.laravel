@@ -9,7 +9,7 @@
         </label>
 
         <!-- Logo -->
-        <a href="/" class="btn btn-ghost text-2xl font-bold">Šalabahter</a>
+        <a href="/" class="btn btn-ghost text-2xl font-bold">{{ config('app.name') }}</a>
       </div>
       
       <div class="navbar-center">

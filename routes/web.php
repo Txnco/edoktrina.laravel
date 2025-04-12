@@ -8,6 +8,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Tutor\TutorDashboardController;
+use App\Http\Controllers\Subject\SubjectController;
 
 use App\Http\Requests\CustomEmailVerification;
 
@@ -46,12 +47,13 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
-        Route::get('dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
-        Route::get('users', [AdminDashboardController::class, 'showUsers'])->name('admin.users');
-        Route::get('roles-permissions', [AdminDashboardController::class, 'showRolesPermissions'])->name('admin.roles-permissions');
+        Route::get('admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+        Route::get('admin/users', [AdminDashboardController::class, 'showUsers'])->name('admin.users');
+        Route::get('admin/roles-permissions', [AdminDashboardController::class, 'showRolesPermissions'])->name('admin.roles-permissions');
+        Route::get('admin/subjects', [SubjectController::class, 'showSubjects'])->name('admin.subjects');
     });
     
-    Route::get('{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
+    Route::get('/u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
 
 });
 
@@ -82,8 +84,3 @@ Route::controller(SocialiteController::class)->group(function(){
 Route::get('/test-role', function () {
     return "Role middleware works!";
 })->middleware(['auth', 'role:admin']);
-
-Route::get('/middleware-debug', function () {
-    $kernel = app(\Illuminate\Contracts\Http\Kernel::class);
-    dd($kernel->getRouteMiddleware());
-});

@@ -9,23 +9,23 @@
         </div>
 
 
-        <div class="flex  items-center w-full max-w-2xl p-8 mx-auto lg:px-12 lg:w-3/6">
+        <div class="flex items-center w-full max-w-2xl p-8 mx-auto lg:px-12 lg:w-3/6">
            
             <div class="w-full">
                 
                 <div class="mb-3 text-left">
-                    <a href="{{ config('app.url') }}" class="text-7xl  font-bold  mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">Šalabahter</a>
+                    <a href="{{ config('app.url') }}" class="text-7xl  font-bold  mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">{{ config('app.name') }}</a>
                 </div>
 
-                <p class="mt-4 text-gray-500 dark:text-gray-400 text-xl">
+                <p class="mt-2 text-gray-500 dark:text-gray-400 text-xl">
                    {{ __('Dobrodošli, molimo Vas prijavite se!') }}
                 </p>
 
                 <form id="login-form" method="POST" action="{{ route('login') }}">
                     @csrf
                     
-                    <div class="grid grid-cols-1 mt-8 gap-6 mt-1">
-                      <x-forms.input  type="email" id="email" name="email" placeholder="{{ __('Email') }}" label="{{ __('Email') }}" />
+                    <div class="grid grid-cols-1 mt-3 gap-6 mt-1">
+                      <x-forms.input  type="email" id="email" name="email" placeholder="{{ __('Email') }}" label="{{ __('Email') }}" value="{{ old('email') }}"/>
                     </div>
 
                     
@@ -33,11 +33,17 @@
                       <x-forms.input-w-labels  labelClass="label-text-alt link" type="password" id="password" name="password" smallLalbel="{{ __('Zaboravili ste lozinku?') }}" link="#" placeholder="{{ __('Lozinka') }}" label="{{ __('Lozinka') }}" />
                     </div>
 
-                      @if($errors->has('unsuccessful'))
-                          <div class="alert alert-error  mt-2">{{ $errors->first('unsuccessful') }}</div>
+                      @if ($errors->any())
+                          <div class="alert alert-error">
+                              <ul>
+                                  @foreach ($errors->all() as $error)
+                                      {{ $error }}
+                                  @endforeach
+                              </ul>
+                          </div>
                       @endif
 
-                    <div class="mt-6">
+                    <div class="mt-4">
                         <x-buttons.primary class='w-full text-lg' type="submit" id='submit' buttonText="{{ __('Prijavi se') }}" />
                     </div>
                 </form>
@@ -86,7 +92,7 @@
                 </a>
 
              
-                <div class="text-center mt-4 font-regular bg-base-100 text-base-content">
+                <div class="text-center font-regular bg-base-100 text-base-content">
                    {{ __('Nemate račun?') }}
                     <a href="{{ config('app.url') }}/register" class="text-primary font-bold">Registrirajte se</a>
                 </div>

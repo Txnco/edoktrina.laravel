@@ -13,21 +13,21 @@
             <div class="w-full">
                 
                 <div class="mb-3 text-left">
-                    <a href="{{ config('app.url') }}" class="text-7xl  font-bold  mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">Šalabahter</a>
+                    <a href="{{ config('app.url') }}" class="text-7xl  font-bold  mb-8 bg-gradient-to-r from-[#7360DF] to-[#8472E5] text-transparent bg-clip-text">{{ config('app.name') }}</a>
                 </div>
 
-                <p class="mt-4 text-gray-500 dark:text-gray-400 text-xl">
+                <p class="mt-2 text-gray-500 dark:text-gray-400 text-xl">
                    {{ __('Dobrodošli, molimo Vas registrirajte se!') }}
                 </p>
 
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                   @csrf
-                  <div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
+                  <div class="grid grid-cols-1 gap-6 mt-3 md:grid-cols-2">
                       <x-forms.input type="text" id="first_name" name="first_name" placeholder="{{ __('Ime') }}" label="{{ __('Ime') }}" value="{{ old('first_name') }}"/>
                       <x-forms.input type="text" id="last_name" name="last_name" placeholder="{{ __('Prezime') }}" label="{{ __('Prezime') }}" value="{{ old('last_name') }}" />
                   </div>
               
-                  <x-forms.input type="email" id="email" name="email" placeholder="Email" label="Email" value="{{ old('email') }}" />
+                  <x-forms.input type="email" id="email" name="email" placeholder="{{ __('Email') }}" label="{{ __('Email') }}" value="{{ old('email') }}" />
               
                   <div class="grid grid-cols-1 gap-6 mt-1 md:grid-cols-2">
                       <x-forms.input type="password" id="password" name="password" placeholder="{{ __('Lozinka') }}" label="{{ __('Lozinka') }}" />
@@ -93,7 +93,7 @@
                      {{ __('Nastavite sa Apple računom') }}
                   </a>
              
-                <div class="text-center mt-4 font-regular bg-base-100 text-base-content">
+                <div class="text-center font-regular bg-base-100 text-base-content">
                     {{ __('Već imate račun?') }}
                     <a href="{{ config('app.url') }}/login" class="text-primary font-bold">{{ __('Prijavite se') }}</a>
                 </div>
