@@ -16,7 +16,7 @@
         </div>
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">{{ __('Predmeti') }}</h1>
-            <button class="btn btn-success btn-sm">
+            <button onclick="addSubjectModal.showModal()" class="btn btn-success btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -40,7 +40,14 @@
         </thead>
         <tbody class="divide-y divide-base-200">
             @foreach($subjects as $subject)
-            <tr class="hover:bg-base-200">
+            <tr id="subject_{{ $subject->id }}" 
+                data-id="{{ $subject->id }}" 
+                data-public="{{ $subject->public_id }}" 
+                data-name="{{ $subject->name }}" 
+                data-description="{{ $subject->description }}" 
+                data-color="{{ $subject->color }}" 
+                data-image="{{ $subject->image }}" 
+                class="hover:bg-base-200">
                 <td class="px-4 py-3">{{ $subject->id }}</td>
                 <td class="px-4 py-3">{{ $subject->public_id }}</td>
                 <td class="px-4 py-3">{{ $subject->name }}</td>
@@ -57,13 +64,9 @@
                         </button>
                         
                         <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-[100] border border-base-200">
-                            <li><a href="" class="text-sm hover:bg-base-200">Uredi</a></li>
+                            <li><button data-id="{{ $subject->id }}" class="text-sm hover:bg-base-200 edit-button">Uredi</button></li>
                             <li>
-                                <form action="" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-sm text-error hover:bg-base-200 ">Izbriši</button>
-                                </form>
+                                <button data-id="{{ $subject->id }}" type="submit" class="text-sm text-error hover:bg-base-200 delete-button">Izbriši</button>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +77,98 @@
     </table>
 </div>
 
+
+@php
+    $subjectFields = [
+        ['name' => 'public_id', 'label' => 'Public ID', 'type' => 'text', 'required' => true],
+        ['name' => 'name', 'label' => 'Naziv', 'type' => 'text', 'required' => true],
+        ['name' => 'description', 'label' => 'Opis', 'type' => 'textarea'],
+        ['name' => 'color', 'label' => 'Boja', 'type' => 'text'],
+        ['name' => 'image', 'label' => 'Slika', 'type' => 'file'],
+    ];
+@endphp
+
+<x-modals.subject-modal
+    modal-id="addSubjectModal"
+    title="Dodaj predmet"
+    action="{{ route('admin.subjects.store') }}"
+    :fields="$subjectFields"
+/>
+
+<x-modals.subject-modal
+    modal-id="editSubjectModal"
+    action="{{ route('admin.subjects.update', ['id' => '__ID__']) }}"
+    :fields="$subjectFields"
+    method="PUT"
+/>
+
+<x-modals.confirmation-modal 
+    modal-id="deleteSubjectModal" 
+    title="{{ __('Obriši predmet') }}" 
+    message="{{ __('Jesi li siguran da želiš obrisati ovaj predmet?') }}" 
+    confirm-text="{{ __('Da') }}" 
+    cancel-text="{{ __('Odustani') }}" 
+    confirm-action="{{ route('admin.subjects.delete', ['id' => '__ID__']) }}"
+    confirm-method="DELETE" 
+/>
+
+
+@if(session('success'))
+    <x-toast.feedback-toast message="{{ session('success') }}" success="true" />
+@elseif(session('error'))
+    <x-toast.feedback-toast message="{{ session('error') }}" success="false" />
+@endif
+
 <script>
+    var basePath = "{{ asset('') }}"; 
+
+    $(".delete-button").on("click", function() {
+        var subjectId = $(this).data("id"); 
+        var baseUrl = "{{ route('admin.subjects.delete', ['id' => '__ID__']) }}";
+        var actualUrl = baseUrl.replace('__ID__', subjectId);
+        $("#deleteSubjectModal form").attr("action", actualUrl);
+        document.getElementById('deleteSubjectModal').showModal();
+    });
+
+    function getSubjectData(subjectId) {
+        var subjectData = {
+            public_id: $("#subject_" + subjectId).data("public"),
+            name: $("#subject_" + subjectId).data("name"),
+            description: $("#subject_" + subjectId).data("description"),
+            color: $("#subject_" + subjectId).data("color"),
+            image: $("#subject_" + subjectId).data("image")
+        };
+        return subjectData;
+    }
+
+    $(".edit-button").on("click", function() {
+        var subjectId = $(this).data("id"); 
+
+        var subjectData = getSubjectData(subjectId);
+
+        var baseUrl = "{{ route('admin.subjects.update', ['id' => '__ID__']) }}";
+        var actualUrl = baseUrl.replace('__ID__', subjectId);
+        $("#editSubjectModal form").attr("action", actualUrl);
+
+        $("#editSubjectModal #modalTitle").text("Uredi predmet (ID: " + subjectId + ")");
+
+        $("#editSubjectModal #public_id").val(subjectData.public_id);
+        $("#editSubjectModal #name").val(subjectData.name);
+        $("#editSubjectModal #description").val(subjectData.description);
+        $("#editSubjectModal #color").val(subjectData.color);
+        $("#editSubjectModal #color_hex").val(subjectData.color);
+        
+        $("#editSubjectModal #image-preview").removeClass('hidden');
+        $("#editSubjectModal #no-image").addClass('hidden');
+        var imagePath = subjectData.image ? basePath + subjectData.image : basePath + 'assets/images/subjects/non_existant.jpg'; 
+        $("#editSubjectModal #image-preview").attr("src", imagePath);
+       
+        $("#editSubjectModal #image").val('');
+
+        document.getElementById('editSubjectModal').showModal();
+    });
+
+
     $(document).ready(function() {
       $('#usersTable').DataTable({
           responsive: {
@@ -82,8 +176,8 @@
           },
           autoWidth: false,
           language: {
-              url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/hr.json'
-          },
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/hr.json'
+            },
           dom: '<"flex flex-wrap justify-between items-center mb-4"<"flex gap-2"f><"flex gap-2"l>>rt<"flex flex-wrap justify-between items-center mt-4"<"flex gap-2"i><"flex gap-2"p>>',
           initComplete: function() {
 

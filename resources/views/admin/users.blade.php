@@ -75,8 +75,8 @@
           },
           autoWidth: false,
           language: {
-              url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/hr.json'
-          },
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/hr.json'
+            },
           dom: '<"flex flex-wrap justify-between items-center mb-4"<"flex gap-2"f><"flex gap-2"l>>rt<"flex flex-wrap justify-between items-center mt-4"<"flex gap-2"i><"flex gap-2"p>>',
           initComplete: function() {
 

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Subject;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subject extends Model
 {
     //
+    use SoftDeletes;
 
     protected $fillable = [
         'public_id',
@@ -17,10 +18,12 @@ class Subject extends Model
         'color',
         'image',
     ];
+
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+
     protected $casts = [
         'public_id' => 'string',
         'name' => 'string',
