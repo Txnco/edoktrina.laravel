@@ -43,7 +43,7 @@
   <div class="hero-content flex-col lg:flex-row-reverse z-10">
     <!-- AI Chat Visualization -->
     <div class="relative lg:w-1/2" data-aos="zoom-in-left">
-      <div class="mockup-window border bg-base-300 shadow-xl ">
+      <div class="mockup-window bg-base-300 shadow-xl ">
         <div class="flex justify-center px-4 py-8 bg-base-200">
           <div class="space-y-4 w-full max-w-md">
             <div class="flex items-center gap-2 mb-6">

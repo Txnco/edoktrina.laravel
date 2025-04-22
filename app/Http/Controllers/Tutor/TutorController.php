@@ -7,10 +7,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TutorDashboardController extends Controller
+class TutorController extends Controller
 {
-    public function showTutorDashboard() {  
-        return view('tutor.dashboard');
+    public function showBecomeTutor() {  
+        return view('tutor.become-tutor');
     }
 
 }

@@ -133,7 +133,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="/postani-instruktor" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('become.tutor') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

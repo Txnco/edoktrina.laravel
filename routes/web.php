@@ -7,7 +7,7 @@ use App\Http\Controllers\SocialiteController;
 
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Tutor\TutorDashboardController;
+use App\Http\Controllers\Tutor\TutorController;
 use App\Http\Controllers\Subject\SubjectController;
 
 use App\Http\Requests\CustomEmailVerification;
@@ -58,8 +58,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('admin/subjects/{id}', [SubjectController::class, 'delete'])->name('admin.subjects.delete');
         
     });
+
+    Route::get('postani-instruktor', [TutorController::class, 'showBecomeTutor'])->name('become.tutor');
     
-    Route::get('/u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
+    Route::get('u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
 
 });
 
