@@ -440,397 +440,442 @@
    </div>
 </div>
 <script src = "https://code.jquery.com/jquery-3.6.0.min.js" > </script>
-<script> $(document).ready(function() { 
-    const availableSubjects = [{
-        id: 1,
-        name: 'Matematika',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 2,
-        name: 'Fizika',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 3,
-        name: 'Kemija',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 4,
-        name: 'Biologija',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 5,
-        name: 'Hrvatski jezik',
-        levels: ['Osnovna škola', 'Srednja škola']
-    }, {
-        id: 6,
-        name: 'Engleski jezik',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 7,
-        name: 'Programiranje',
-        levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
-    }, {
-        id: 8,
-        name: 'Statistika',
-        levels: ['Srednja škola', 'Fakultet']
-    }];
-    let currentStep = 'personal';
-    const steps = ['personal', 'education', 'subjects', 'experience', 'availability', 'documents', 'submit'];
-    let selectedSubjects = [];
-    let formData = {
-        personal: {
-            first_name: '{{ auth()->user()->first_name ?? "" }}',
-            last_name: '{{ auth()->user()->last_name ?? "" }}',
-            email: '{{ auth()->user()->email ?? "" }}',
-            phone: '',
-            location: '',
-            bio: ''
-        },
-        education: [{
-            institution: '',
-            degree: '',
-            field: '',
-            start_year: '',
-            end_year: '',
-            current: false
-        }],
-        subjects: [],
-        experience: {
-            years: '',
-            description: '',
-            has_online_experience: false
-        },
-        availability: {
-            hours_per_week: '',
-            weekdays: [],
-            weekends: false,
-            online: true,
-            in_person: false,
-            group_sessions: false
-        },
-        documents: {
-            cv: null,
-            certificate: null,
-            id_card: null
-        }
-    };
-    
-    function loadSubjects() {
-        const subjectsContainer = $('#subjects-container');
-        subjectsContainer.empty();
-        availableSubjects.forEach(subject => {
-            const subjectItem = $(` <div class="bg-base-200 p-4 rounded-lg"> <h3 class="font-bold text-lg mb-3">${subject.name}</h3> <div class="flex flex-wrap gap-3 subject-levels" data-subject-id="${subject.id}" data-subject-name="${subject.name}"> ${subject.levels.map(level => ` <div class="badge badge-lg p-4 cursor-pointer hover:opacity-80 transition-opacity subject-level ${isSubjectSelected(subject.id, level) ? 'badge-primary' : 'badge-outline'}" data-level="${level}"> ${level} ${isSubjectSelected(subject.id, level) ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' : ''} </div> `).join('')} </div> </div> `);
-            subjectsContainer.append(subjectItem);
-        });
-        updateSelectedSubjectsDisplay();
-    }
-    
-    function isSubjectSelected(subjectId, level) {
-        return selectedSubjects.some(s => s.id === subjectId && s.level === level);
-    }
-    
-    function updateSelectedSubjectsDisplay() {
-        const selectedSubjectsDisplay = $('#selected-subjects-display');
-        const selectedSubjectsList = $('#selected-subjects-list');
-        if (selectedSubjects.length > 0) {
-            selectedSubjectsDisplay.removeClass('hidden');
-            selectedSubjectsList.empty();
-            selectedSubjects.forEach(sub => {
-                const badge = $(` <div class="badge badge-primary gap-1"> ${sub.name} (${sub.level}) <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 cursor-pointer remove-subject" data-id="${sub.id}" data-level="${sub.level}" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /> </svg> </div> `);
-                selectedSubjectsList.append(badge);
+<script>
+    $(document).ready(function() { 
+        const availableSubjects = [{
+            id: 1,
+            name: 'Matematika',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 2,
+            name: 'Fizika',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 3,
+            name: 'Kemija',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 4,
+            name: 'Biologija',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 5,
+            name: 'Hrvatski jezik',
+            levels: ['Osnovna škola', 'Srednja škola']
+        }, {
+            id: 6,
+            name: 'Engleski jezik',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 7,
+            name: 'Programiranje',
+            levels: ['Osnovna škola', 'Srednja škola', 'Fakultet']
+        }, {
+            id: 8,
+            name: 'Statistika',
+            levels: ['Srednja škola', 'Fakultet']
+        }];
+        let currentStep = 'personal';
+        const steps = ['personal', 'education', 'subjects', 'experience', 'availability', 'documents', 'submit'];
+        let selectedSubjects = [];
+        let formData = {
+            personal: {
+                first_name: '{{ auth()->user()->first_name ?? "" }}',
+                last_name: '{{ auth()->user()->last_name ?? "" }}',
+                email: '{{ auth()->user()->email ?? "" }}',
+                phone: '',
+                location: '',
+                bio: ''
+            },
+            education: [{
+                institution: '',
+                degree: '',
+                field: '',
+                start_year: '',
+                end_year: '',
+                current: false
+            }],
+            subjects: [],
+            experience: {
+                years: '',
+                description: '',
+                has_online_experience: false
+            },
+            availability: {
+                hours_per_week: '',
+                weekdays: [],
+                weekends: false,
+                online: true,
+                in_person: false,
+                group_sessions: false
+            },
+            documents: {
+                cv: null,
+                certificate: null,
+                id_card: null
+            }
+        };
+        
+        function loadSubjects() {
+            const subjectsContainer = $('#subjects-container');
+            subjectsContainer.empty();
+            availableSubjects.forEach(subject => {
+                const subjectItem = $(` <div class="bg-base-200 p-4 rounded-lg"> <h3 class="font-bold text-lg mb-3">${subject.name}</h3> <div class="flex flex-wrap gap-3 subject-levels" data-subject-id="${subject.id}" data-subject-name="${subject.name}"> ${subject.levels.map(level => ` <div class="badge badge-lg p-4 cursor-pointer hover:opacity-80 transition-opacity subject-level ${isSubjectSelected(subject.id, level) ? 'badge-primary' : 'badge-outline'}" data-level="${level}"> ${level} ${isSubjectSelected(subject.id, level) ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' : ''} </div> `).join('')} </div> </div> `);
+                subjectsContainer.append(subjectItem);
             });
-        } else {
-            selectedSubjectsDisplay.addClass('hidden');
+            updateSelectedSubjectsDisplay();
         }
-    }
-    let educationCounter = 1;
-    $('#add-education').click(function() {
-        educationCounter++;
-        const newEducation = $(` <div class="education-item bg-base-200 p-4 rounded-lg"> <div class="flex justify-between items-center mb-4"> <h3 class="font-bold text-lg">Obrazovanje ${educationCounter}</h3> <button type="button" class="btn btn-sm btn-circle btn-ghost remove-education"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div> <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> <div class="form-control"> <label class="label"> <span class="label-text">Obrazovna institucija</span> </label> <input type="text" name="education[${educationCounter - 1}][institution]" class="input input-bordered" required placeholder="Sveučilište, Fakultet, Škola..." /> </div> <div class="form-control"> <label class="label"> <span class="label-text">Stupanj obrazovanja</span> </label> <select name="education[${educationCounter - 1}][degree]" class="select select-bordered w-full" required> <option value="">Odaberite...</option> <option value="high_school">Srednja škola</option> <option value="bachelor">Preddiplomski studij</option> <option value="master">Diplomski studij</option> <option value="phd">Doktorat</option> <option value="other">Ostalo</option> </select> </div> <div class="form-control"> <label class="label"> <span class="label-text">Područje obrazovanja</span> </label> <input type="text" name="education[${educationCounter - 1}][field]" class="input input-bordered" required placeholder="npr. Matematika, Fizika..." /> </div> <div class="grid grid-cols-2 gap-3"> <div class="form-control"> <label class="label"> <span class="label-text">Početak</span> </label> <input type="number" name="education[${educationCounter - 1}][start_year]" min="1950" max="2023" class="input input-bordered" required placeholder="Godina" /> </div> <div class="form-control"> <label class="label"> <span class="label-text">Završetak</span> </label> <input type="number" name="education[${educationCounter - 1}][end_year]" min="1950" max="2030" class="input input-bordered end-year" placeholder="Godina" /> </div> </div> <div class="form-control"> <label class="label cursor-pointer justify-start gap-3"> <input type="checkbox" name="education[${educationCounter - 1}][current]" class="checkbox checkbox-primary current-education" /> <span class="label-text">Trenutno studiram</span> </label> </div> </div> </div> `);
-        $('#education-container').append(newEducation);
-    });
-    $(document).on('click', '.remove-education', function() {
-        if ($('.education-item').length > 1) {
-            $(this).closest('.education-item').remove();
-            $('.education-item').each(function(index) {
-                $(this).find('h3').text(`Obrazovanje ${index + 1}`);
-                $(this).find('input, select').each(function() {
-                    const name = $(this).attr('name');
-                    if (name) {
-                        $(this).attr('name', name.replace(/education\[\d+\]/, `education[${index}]`));
-                    }
+        
+        function isSubjectSelected(subjectId, level) {
+            return selectedSubjects.some(s => s.id === subjectId && s.level === level);
+        }
+        
+        function updateSelectedSubjectsDisplay() {
+            const selectedSubjectsDisplay = $('#selected-subjects-display');
+            const selectedSubjectsList = $('#selected-subjects-list');
+            if (selectedSubjects.length > 0) {
+                selectedSubjectsDisplay.removeClass('hidden');
+                selectedSubjectsList.empty();
+                selectedSubjects.forEach(sub => {
+                    const badge = $(` <div class="badge badge-primary gap-1"> ${sub.name} (${sub.level}) <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 cursor-pointer remove-subject" data-id="${sub.id}" data-level="${sub.level}" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /> </svg> </div> `);
+                    selectedSubjectsList.append(badge);
                 });
-            });
-            educationCounter = $('.education-item').length;
+            } else {
+                selectedSubjectsDisplay.addClass('hidden');
+            }
         }
-    });
-    $(document).on('change', '.current-education', function() {
-        const endYearField = $(this).closest('.education-item').find('.end-year');
-        if ($(this).is(':checked')) {
-            endYearField.prop('disabled', true).val('');
-        } else {
-            endYearField.prop('disabled', false);
-        }
-    });
-    $(document).on('click', '.subject-level', function() {
-        const subjectId = parseInt($(this).parent().data('subject-id'));
-        const subjectName = $(this).parent().data('subject-name');
-        const level = $(this).data('level');
-        const existingIndex = selectedSubjects.findIndex(s => s.id === subjectId && s.level === level);
-        if (existingIndex >= 0) {
-            selectedSubjects.splice(existingIndex, 1);
-            $(this).removeClass('badge-primary').addClass('badge-outline');
-            $(this).find('svg').remove();
-        } else {
-            selectedSubjects.push({
-                id: subjectId,
-                name: subjectName,
-                level: level
-            });
-            $(this).removeClass('badge-outline').addClass('badge-primary');
-            $(this).append('<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>');
-        }
-        updateSelectedSubjectsDisplay();
-    });
-    $(document).on('click', '.remove-subject', function() {
-        const subjectId = parseInt($(this).data('id'));
-        const level = $(this).data('level');
-        const existingIndex = selectedSubjects.findIndex(s => s.id === subjectId && s.level === level);
-        if (existingIndex >= 0) {
-            selectedSubjects.splice(existingIndex, 1);
-        }
-        $(this).parent().remove();
-        $(`.subject-level[data-level="${level}"]`).each(function() {
-            if (parseInt($(this).parent().data('subject-id')) === subjectId) {
-                $(this).removeClass('badge-primary').addClass('badge-outline');
-                $(this).find('svg').remove();
+        let educationCounter = 1;
+        $('#add-education').click(function() {
+            educationCounter++;
+            const newEducation = $(` <div class="education-item bg-base-200 p-4 rounded-lg"> <div class="flex justify-between items-center mb-4"> <h3 class="font-bold text-lg">Obrazovanje ${educationCounter}</h3> <button type="button" class="btn btn-sm btn-circle btn-ghost remove-education"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div> <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> <div class="form-control"> <label class="label"> <span class="label-text">Obrazovna institucija</span> </label> <input type="text" name="education[${educationCounter - 1}][institution]" class="input input-bordered" required placeholder="Sveučilište, Fakultet, Škola..." /> </div> <div class="form-control"> <label class="label"> <span class="label-text">Stupanj obrazovanja</span> </label> <select name="education[${educationCounter - 1}][degree]" class="select select-bordered w-full" required> <option value="">Odaberite...</option> <option value="high_school">Srednja škola</option> <option value="bachelor">Preddiplomski studij</option> <option value="master">Diplomski studij</option> <option value="phd">Doktorat</option> <option value="other">Ostalo</option> </select> </div> <div class="form-control"> <label class="label"> <span class="label-text">Područje obrazovanja</span> </label> <input type="text" name="education[${educationCounter - 1}][field]" class="input input-bordered" required placeholder="npr. Matematika, Fizika..." /> </div> <div class="grid grid-cols-2 gap-3"> <div class="form-control"> <label class="label"> <span class="label-text">Početak</span> </label> <input type="number" name="education[${educationCounter - 1}][start_year]" min="1950" max="2023" class="input input-bordered" required placeholder="Godina" /> </div> <div class="form-control"> <label class="label"> <span class="label-text">Završetak</span> </label> <input type="number" name="education[${educationCounter - 1}][end_year]" min="1950" max="2030" class="input input-bordered end-year" placeholder="Godina" /> </div> </div> <div class="form-control"> <label class="label cursor-pointer justify-start gap-3"> <input type="checkbox" name="education[${educationCounter - 1}][current]" class="checkbox checkbox-primary current-education" /> <span class="label-text">Trenutno studiram</span> </label> </div> </div> </div> `);
+            $('#education-container').append(newEducation);
+        });
+        $(document).on('click', '.remove-education', function() {
+            if ($('.education-item').length > 1) {
+                $(this).closest('.education-item').remove();
+                $('.education-item').each(function(index) {
+                    $(this).find('h3').text(`Obrazovanje ${index + 1}`);
+                    $(this).find('input, select').each(function() {
+                        const name = $(this).attr('name');
+                        if (name) {
+                            $(this).attr('name', name.replace(/education\[\d+\]/, `education[${index}]`));
+                        }
+                    });
+                });
+                educationCounter = $('.education-item').length;
             }
         });
-        updateSelectedSubjectsDisplay();
-    });
-    $('#cv-upload-container').click(function() {
-        $('#cv-upload').click();
-    });
-    $('#certificate-upload-container').click(function() {
-        $('#certificate-upload').click();
-    });
-    $('#id-upload-container').click(function() {
-        $('#id-upload').click();
-    });
-    $('#cv-upload').change(function() {
-        handleFileUpload(this, 'cv', '#cv-filename', '#cv-upload-empty', '#cv-upload-complete');
-    });
-    $('#certificate-upload').change(function() {
-        handleFileUpload(this, 'certificate', '#certificate-filename', '#certificate-upload-empty', '#certificate-upload-complete');
-    });
-    $('#id-upload').change(function() {
-        handleFileUpload(this, 'id_card', '#id-filename', '#id-upload-empty', '#id-upload-complete');
-    });
-    
-    function handleFileUpload(inputElement, fileType, filenameSelector, emptySelector, completeSelector) {
-        if (inputElement.files.length > 0) {
-            const file = inputElement.files[0];
-            formData.documents[fileType] = file;
-            $(filenameSelector).text(file.name);
-            $(emptySelector).addClass('hidden');
-            $(completeSelector).removeClass('hidden');
-        }
-    }
-    $('#next-step').click(function() {
-        // if (!isStepValid(currentStep)) {
-        //     showValidationError();
-        //     return;
-        // }
-        collectFormData();
-        const currentIndex = steps.indexOf(currentStep);
-        if (currentIndex < steps.length - 1) {
-            goToStep(steps[currentIndex + 1]);
-        }
-    });
-    $('#prev-step').click(function() {
-        const currentIndex = steps.indexOf(currentStep);
-        if (currentIndex > 0) {
-            goToStep(steps[currentIndex - 1]);
-        }
-    });
-    $(document).on('click', '.edit-step', function() {
-        const stepToEdit = $(this).data('step');
-        if (steps.includes(stepToEdit)) {
-            goToStep(stepToEdit);
-        }
-    });
-    $('#submit-application').click(function() {
-        if (!$('#terms-accepted').is(':checked')) {
-            $('#terms-error').removeClass('hidden');
-            return;
-        }
-        submitApplication();
-    });
-    
-    function collectFormData() {
-        if (currentStep === 'personal') {
-            formData.personal = {
-                first_name: $('#first_name').val(),
-                last_name: $('#last_name').val(),
-                email: $('#email').val(),
-                phone: $('#phone').val(),
-                location: $('#location').val(),
-                bio: $('#bio').val()
-            };
-        } else if (currentStep === 'education') {
-            formData.education = [];
-            $('.education-item').each(function(index) {
-                formData.education.push({
-                    institution: $(this).find(`input[name="education[${index}][institution]"]`).val(),
-                    degree: $(this).find(`select[name="education[${index}][degree]"]`).val(),
-                    field: $(this).find(`input[name="education[${index}][field]"]`).val(),
-                    start_year: $(this).find(`input[name="education[${index}][start_year]"]`).val(),
-                    end_year: $(this).find(`input[name="education[${index}][end_year]"]`).val(),
-                    current: $(this).find(`input[name="education[${index}][current]"]`).is(':checked')
+        $(document).on('change', '.current-education', function() {
+            const endYearField = $(this).closest('.education-item').find('.end-year');
+            if ($(this).is(':checked')) {
+                endYearField.prop('disabled', true).val('');
+            } else {
+                endYearField.prop('disabled', false);
+            }
+        });
+        $(document).on('click', '.subject-level', function() {
+            const subjectId = parseInt($(this).parent().data('subject-id'));
+            const subjectName = $(this).parent().data('subject-name');
+            const level = $(this).data('level');
+            const existingIndex = selectedSubjects.findIndex(s => s.id === subjectId && s.level === level);
+            if (existingIndex >= 0) {
+                selectedSubjects.splice(existingIndex, 1);
+                $(this).removeClass('badge-primary').addClass('badge-outline');
+                $(this).find('svg').remove();
+            } else {
+                selectedSubjects.push({
+                    id: subjectId,
+                    name: subjectName,
+                    level: level
                 });
-            });
-        } else if (currentStep === 'subjects') {
-            formData.subjects = selectedSubjects;
-        } else if (currentStep === 'experience') {
-            formData.experience = {
-                years: $('#years').val(),
-                description: $('#experience-description').val(),
-                has_online_experience: $('#has-online-experience').is(':checked')
-            };
-        } else if (currentStep === 'availability') {
-            const weekdays = [];
-            $('input[name="availability[weekdays][]"]:checked').each(function() {
-                weekdays.push($(this).val());
-            });
-            formData.availability = {
-                hours_per_week: $('#hours-per-week').val(),
-                weekdays: weekdays,
-                weekends: $('#weekends').is(':checked'),
-                online: $('#online').is(':checked'),
-                in_person: $('#in-person').is(':checked'),
-                group_sessions: $('#group-sessions').is(':checked')
-            };
-        }
-    }
-    
-    function updateReviewStep() {
-        $('#review-name').text(`${formData.personal.first_name} ${formData.personal.last_name}`);
-        $('#review-email').text(formData.personal.email);
-        $('#review-phone').text(formData.personal.phone);
-        $('#review-location').text(formData.personal.location);
-        $('#review-subjects').empty();
-        formData.subjects.forEach(sub => {
-            $('#review-subjects').append(` <div class="badge badge-primary p-3"> ${sub.name} (${sub.level}) </div> `);
+                $(this).removeClass('badge-outline').addClass('badge-primary');
+                $(this).append('<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>');
+            }
+            updateSelectedSubjectsDisplay();
         });
-        $('#review-teaching-methods').empty();
-        if (formData.availability.online) {
-            $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Online instrukcije</div>');
-        }
-        if (formData.availability.in_person) {
-            $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Instrukcije uživo</div>');
-        }
-        if (formData.availability.group_sessions) {
-            $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Grupne instrukcije</div>');
-        }
-        $('#review-hours').text(`${formData.availability.hours_per_week} sati tjedno`);
-        $('#review-days').empty();
-        formData.availability.weekdays.forEach(day => {
-            $('#review-days').append(`<div class="badge badge-outline">${day}</div>`);
-        });
-        if (formData.availability.weekends) {
-            $('#review-days').append('<div class="badge badge-outline">Vikend</div>');
-        }
-        $('#review-documents').empty();
-        if (formData.documents.cv) {
-            $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Životopis (CV)</span> </li> `);
-        }
-        if (formData.documents.certificate) {
-            $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Diploma ili certifikat</span> </li> `);
-        }
-        if (formData.documents.id_card) {
-            $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Osobna iskaznica</span> </li> `);
-        }
-    }
-    
-    function goToStep(step) {
-        $('.form-step').addClass('hidden');
-        $(`#step-${step}`).removeClass('hidden');
-        currentStep = step;
-        updateNavigationButtons();
-        initializeStep(step);
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-    
-    function initializeStep(step) {
-        if (step === 'subjects') {
-            loadSubjects();
-        } else if (step === 'submit') {
-            updateReviewStep();
-        }
-    }
-    
-    function updateNavigationButtons() {
-        if (currentStep === 'personal') {
-            $('#prev-step').addClass('hidden');
-        } else {
-            $('#prev-step').removeClass('hidden');
-        }
-        if (currentStep === 'submit') {
-            $('#next-step').addClass('hidden');
-            $('#submit-application').removeClass('hidden');
-        } else {
-            $('#next-step').removeClass('hidden');
-            $('#submit-application').addClass('hidden');
-        }
-    }
-    
-    function isStepValid(step) {
-        if (step === 'personal') {
-            return $('#first_name').val() && $('#last_name').val() && $('#email').val() && $('#phone').val() && $('#location').val();
-        } else if (step === 'education') {
-            let valid = true;
-            $('.education-item').each(function() {
-                const institution = $(this).find('input[name$="[institution]"]').val();
-                const degree = $(this).find('select[name$="[degree]"]').val();
-                const field = $(this).find('input[name$="[field]"]').val();
-                const startYear = $(this).find('input[name$="[start_year]"]').val();
-                if (!institution || !degree || !field || !startYear) {
-                    valid = false;
+        $(document).on('click', '.remove-subject', function() {
+            const subjectId = parseInt($(this).data('id'));
+            const level = $(this).data('level');
+            const existingIndex = selectedSubjects.findIndex(s => s.id === subjectId && s.level === level);
+            if (existingIndex >= 0) {
+                selectedSubjects.splice(existingIndex, 1);
+            }
+            $(this).parent().remove();
+            $(`.subject-level[data-level="${level}"]`).each(function() {
+                if (parseInt($(this).parent().data('subject-id')) === subjectId) {
+                    $(this).removeClass('badge-primary').addClass('badge-outline');
+                    $(this).find('svg').remove();
                 }
             });
-            return valid;
-        } else if (step === 'subjects') {
-            return selectedSubjects.length > 0;
-        } else if (step === 'experience') {
-            return $('#years').val() && $('#experience-description').val();
-        } else if (step === 'availability') {
-            const hoursPerWeek = $('#hours-per-week').val();
-            const weekdaysSelected = $('input[name="availability[weekdays][]"]:checked').length > 0;
-            const teachingMethod = $('#online').is(':checked') || $('#in-person').is(':checked');
-            return hoursPerWeek && weekdaysSelected && teachingMethod;
-        } else if (step === 'documents') {
-            return formData.documents.cv && formData.documents.id_card;
-        } else if (step === 'submit') {
-            return true;
+            updateSelectedSubjectsDisplay();
+        });
+        
+        // Fixed file upload handlers
+        $('#cv-upload-container').on('click', function(e) {
+            if (e.target === this || !$(e.target).closest('input[type="file"]').length) {
+                $('#cv-upload').trigger('click');
+            }
+        });
+        
+        $('#certificate-upload-container').on('click', function(e) {
+            if (e.target === this || !$(e.target).closest('input[type="file"]').length) {
+                $('#certificate-upload').trigger('click');
+            }
+        });
+        
+        $('#id-upload-container').on('click', function(e) {
+            if (e.target === this || !$(e.target).closest('input[type="file"]').length) {
+                $('#id-upload').trigger('click');
+            }
+        });
+        
+        $('#cv-upload').on('change', function() {
+            handleFileUpload(this, 'cv', '#cv-filename', '#cv-upload-empty', '#cv-upload-complete');
+        });
+        
+        $('#certificate-upload').on('change', function() {
+            handleFileUpload(this, 'certificate', '#certificate-filename', '#certificate-upload-empty', '#certificate-upload-complete');
+        });
+        
+        $('#id-upload').on('change', function() {
+            handleFileUpload(this, 'id_card', '#id-filename', '#id-upload-empty', '#id-upload-complete');
+        });
+        
+        function handleFileUpload(inputElement, fileType, filenameSelector, emptySelector, completeSelector) {
+            if (inputElement.files && inputElement.files.length > 0) {
+                const file = inputElement.files[0];
+                formData.documents[fileType] = file;
+                //File upload
+                $(filenameSelector).text(file.name);
+                $(emptySelector).addClass('hidden');
+                $(completeSelector).removeClass('hidden');
+            }
         }
-        return false;
-    }
-    
-    function showValidationError() {
-        $('#validation-message').removeClass('hidden');
-        setTimeout(function() {
-            $('#validation-message').addClass('hidden');
-        }, 3000);
-    }
-    
-    function submitApplication() {
-        alert('Vaša prijava je uspješno poslana! Uskoro ćemo vas kontaktirati.');
-        $('#step-verification').addClass('step-primary');
-    }
-    goToStep('personal');
+        
+        $('#next-step').click(function() {
+            // if (!isStepValid(currentStep)) {
+            //     showValidationError();
+            //     return;
+            // }
+            collectFormData();
+            const currentIndex = steps.indexOf(currentStep);
+            if (currentIndex < steps.length - 1) {
+                goToStep(steps[currentIndex + 1]);
+            }
+        });
+        $('#prev-step').click(function() {
+            const currentIndex = steps.indexOf(currentStep);
+            if (currentIndex > 0) {
+                goToStep(steps[currentIndex - 1]);
+            }
+        });
+        $(document).on('click', '.edit-step', function() {
+            const stepToEdit = $(this).data('step');
+            if (steps.includes(stepToEdit)) {
+                goToStep(stepToEdit);
+            }
+        });
+        $('#submit-application').click(function() {
+            if (!$('#terms-accepted').is(':checked')) {
+                $('#terms-error').removeClass('hidden');
+                return;
+            }
+            submitApplication();
+        });
+        
+        function collectFormData() {
+            if (currentStep === 'personal') {
+                formData.personal = {
+                    first_name: $('#first_name').val(),
+                    last_name: $('#last_name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    location: $('#location').val(),
+                    bio: $('#bio').val()
+                };
+            } else if (currentStep === 'education') {
+                formData.education = [];
+                $('.education-item').each(function(index) {
+                    formData.education.push({
+                        institution: $(this).find(`input[name="education[${index}][institution]"]`).val(),
+                        degree: $(this).find(`select[name="education[${index}][degree]"]`).val(),
+                        field: $(this).find(`input[name="education[${index}][field]"]`).val(),
+                        start_year: $(this).find(`input[name="education[${index}][start_year]"]`).val(),
+                        end_year: $(this).find(`input[name="education[${index}][end_year]"]`).val(),
+                        current: $(this).find(`input[name="education[${index}][current]"]`).is(':checked')
+                    });
+                });
+            } else if (currentStep === 'subjects') {
+                formData.subjects = selectedSubjects;
+            } else if (currentStep === 'experience') {
+                formData.experience = {
+                    years: $('#years').val(),
+                    description: $('#experience-description').val(),
+                    has_online_experience: $('#has-online-experience').is(':checked')
+                };
+            } else if (currentStep === 'availability') {
+                const weekdays = [];
+                $('input[name="availability[weekdays][]"]:checked').each(function() {
+                    weekdays.push($(this).val());
+                });
+                formData.availability = {
+                    hours_per_week: $('#hours-per-week').val(),
+                    weekdays: weekdays,
+                    weekends: $('#weekends').is(':checked'),
+                    online: $('#online').is(':checked'),
+                    in_person: $('#in-person').is(':checked'),
+                    group_sessions: $('#group-sessions').is(':checked')
+                };
+            }
+        }
+        
+        function updateReviewStep() {
+            $('#review-name').text(`${formData.personal.first_name} ${formData.personal.last_name}`);
+            $('#review-email').text(formData.personal.email);
+            $('#review-phone').text(formData.personal.phone);
+            $('#review-location').text(formData.personal.location);
+            $('#review-subjects').empty();
+            formData.subjects.forEach(sub => {
+                $('#review-subjects').append(` <div class="badge badge-primary p-3"> ${sub.name} (${sub.level}) </div> `);
+            });
+            $('#review-teaching-methods').empty();
+            if (formData.availability.online) {
+                $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Online instrukcije</div>');
+            }
+            if (formData.availability.in_person) {
+                $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Instrukcije uživo</div>');
+            }
+            if (formData.availability.group_sessions) {
+                $('#review-teaching-methods').append('<div class="badge badge-accent p-3">Grupne instrukcije</div>');
+            }
+            $('#review-hours').text(`${formData.availability.hours_per_week} sati tjedno`);
+            $('#review-days').empty();
+            formData.availability.weekdays.forEach(day => {
+                $('#review-days').append(`<div class="badge badge-outline">${day}</div>`);
+            });
+            if (formData.availability.weekends) {
+                $('#review-days').append('<div class="badge badge-outline">Vikend</div>');
+            }
+            $('#review-documents').empty();
+            if (formData.documents.cv) {
+                $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Životopis (CV)</span> </li> `);
+            }
+            if (formData.documents.certificate) {
+                $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Diploma ili certifikat</span> </li> `);
+            }
+            if (formData.documents.id_card) {
+                $('#review-documents').append(` <li class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> <span>Osobna iskaznica</span> </li> `);
+            }
+        }
+        
+        // Function to update timeline based on current step
+        function updateTimeline(step) {
+            // Determine which part of the process we're in
+            const stepIndex = steps.indexOf(step);
+            
+            // Reset all steps
+            $('.steps .step').removeClass('step-primary');
+            
+            // Always mark first step as active
+            $('.steps .step:first-child').addClass('step-primary');
+            
+            // Form submission steps correspond to timeline steps
+            if (stepIndex >= 6) { // At submit step
+                $('#step-verification').addClass('step-primary');
+                $('#step-interview').addClass('step-primary');
+                $('#step-onboarding').addClass('step-primary');
+            } else if (stepIndex >= 5) { // At documents step
+                $('#step-verification').addClass('step-primary');
+                $('#step-interview').addClass('step-primary');
+            } else if (stepIndex >= 1) { // At education step or beyond
+                $('#step-verification').addClass('step-primary');
+            }
+        }
+        
+        function goToStep(step) {
+            $('.form-step').addClass('hidden');
+            $(`#step-${step}`).removeClass('hidden');
+            currentStep = step;
+            updateNavigationButtons();
+            updateTimeline(step); // Update timeline when changing steps
+            initializeStep(step);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function initializeStep(step) {
+            if (step === 'subjects') {
+                loadSubjects();
+            } else if (step === 'submit') {
+                updateReviewStep();
+            }
+        }
+        
+        function updateNavigationButtons() {
+            if (currentStep === 'personal') {
+                $('#prev-step').addClass('hidden');
+            } else {
+                $('#prev-step').removeClass('hidden');
+            }
+            if (currentStep === 'submit') {
+                $('#next-step').addClass('hidden');
+                $('#submit-application').removeClass('hidden');
+            } else {
+                $('#next-step').removeClass('hidden');
+                $('#submit-application').addClass('hidden');
+            }
+        }
+        
+        function isStepValid(step) {
+            if (step === 'personal') {
+                return $('#first_name').val() && $('#last_name').val() && $('#email').val() && $('#phone').val() && $('#location').val();
+            } else if (step === 'education') {
+                let valid = true;
+                $('.education-item').each(function() {
+                    const institution = $(this).find('input[name$="[institution]"]').val();
+                    const degree = $(this).find('select[name$="[degree]"]').val();
+                    const field = $(this).find('input[name$="[field]"]').val();
+                    const startYear = $(this).find('input[name$="[start_year]"]').val();
+                    if (!institution || !degree || !field || !startYear) {
+                        valid = false;
+                    }
+                });
+                return valid;
+            } else if (step === 'subjects') {
+                return selectedSubjects.length > 0;
+            } else if (step === 'experience') {
+                return $('#years').val() && $('#experience-description').val();
+            } else if (step === 'availability') {
+                const hoursPerWeek = $('#hours-per-week').val();
+                const weekdaysSelected = $('input[name="availability[weekdays][]"]:checked').length > 0;
+                const teachingMethod = $('#online').is(':checked') || $('#in-person').is(':checked');
+                return hoursPerWeek && weekdaysSelected && teachingMethod;
+            } else if (step === 'documents') {
+                return formData.documents.cv && formData.documents.id_card;
+            } else if (step === 'submit') {
+                return true;
+            }
+            return false;
+        }
+        
+        function showValidationError() {
+            $('#validation-message').removeClass('hidden');
+            setTimeout(function() {
+                $('#validation-message').addClass('hidden');
+            }, 3000);
+        }
+        
+        function submitApplication() {
+            alert('Vaša prijava je uspješno poslana! Uskoro ćemo vas kontaktirati.');
+            $('#step-verification').addClass('step-primary');
+        }
+        
+        // Start at the first step and initialize the timeline
+        goToStep('personal');
+        updateTimeline('personal');
     }); 
-</script>
+    </script>
+    
 @endsection
