@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        return response()->json(Subject::all());
+    }
+
     public function showSubjects() {
         $subjects = Subject::select(['id', 'public_id', 'name', 'description', 'color', 'image'])->latest()->get();
 

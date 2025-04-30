@@ -9,6 +9,8 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Tutor\TutorController;
 use App\Http\Controllers\Subject\SubjectController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Api\ApiChatController;
 
 use App\Http\Requests\CustomEmailVerification;
 
@@ -58,6 +60,22 @@ Route::middleware('auth')->group(function () {
         Route::delete('admin/subjects/{id}', [SubjectController::class, 'delete'])->name('admin.subjects.delete');
         
     });
+
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/session', [ChatController::class, 'createSession'])->name('chat.session.create');
+    Route::delete('/chat/session/{session}', [ChatController::class, 'deleteSession'])->name('chat.session.delete');
+    Route::patch('/chat/session/{session}', [ChatController::class, 'renameSession'])->name('chat.session.rename');
+    Route::get('/chat/session/{session}', [ChatController::class, 'getSession'])->name('chat.session.get');
+    
+    Route::post   ('/chat/messages',                   [ApiChatController::class, 'sendMessage'])->name('chat.messages.send');
+    Route::patch  ('/chat/messages/{message}',         [ApiChatController::class, 'editMessage'])->name('chat.messages.edit');
+    Route::get    ('/chat/session/{session}/status',   [ApiChatController::class, 'getSessionStatus'])->name('chat.session.status');
+    Route::post   ('/chat/session/{session}/retry',    [ApiChatController::class, 'retryProcessing'])->name('chat.session.retry');
+    Route::post   ('/chat/session/{session}/restart',  [ApiChatController::class, 'restartProcessing'])->name('chat.session.restart');
+    Route::get('/chat/session/{session}/messages',[ApiChatController::class, 'getMessages'])->name('chat.session.messages');
+
+    Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+
 
     Route::get('postani-instruktor', [TutorController::class, 'showBecomeTutor'])->name('become.tutor');
     

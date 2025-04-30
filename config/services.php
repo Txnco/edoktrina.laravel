@@ -39,6 +39,15 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_CALLBACKS_REDIRECTS'),
+    ],
+
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'api_base' => env('OPENAI_API_BASE', 'https://api.openai.com/v1'),
+        'api_version' => env('OPENAI_API_VERSION', '2023-05-15'),
+        'api_type' => env('OPENAI_API_TYPE', 'openai'),
+        'api_model' => env('OPENAI_API_MODEL', 'gpt-3.5-turbo'),
+        'api_timeout' => env('OPENAI_API_TIMEOUT', 60),
     ]
 
 ];
