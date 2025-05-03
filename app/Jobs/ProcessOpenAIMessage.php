@@ -39,8 +39,8 @@ class ProcessOpenAIMessage implements ShouldQueue
                 ->post('https://api.openai.com/v1/chat/completions', [
                     'model'      => config('services.openai.model', 'gpt-4o'),
                     'messages'   => $messages,
-                    'max_tokens' => 2000,
-                    'temperature'=> 2.3,
+                    'max_tokens' => 4000,
+                    'temperature'=> 0.7,
                 ]);
 
             if ($response->failed()) {

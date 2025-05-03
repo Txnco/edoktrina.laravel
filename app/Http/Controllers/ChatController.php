@@ -35,7 +35,7 @@ class ChatController extends Controller
         $session = ChatSession::create([
             'user_id' => Auth::id(),
             'subject_id' => $validated['subject_id'],
-            'title' => "Chat on {$subject->name}",
+            'title' => "{$subject->name}",
         ]);
 
         return response()->json([

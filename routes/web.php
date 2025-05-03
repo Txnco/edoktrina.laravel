@@ -74,12 +74,11 @@ Route::middleware('auth')->group(function () {
     Route::post   ('/chat/session/{session}/restart',  [ApiChatController::class, 'restartProcessing'])->name('chat.session.restart');
     Route::get('/chat/session/{session}/messages',[ApiChatController::class, 'getMessages'])->name('chat.session.messages');
 
-    Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 
 
-    Route::get('postani-instruktor', [TutorController::class, 'showBecomeTutor'])->name('become.tutor');
+    Route::get('/postani-instruktor', [TutorController::class, 'showBecomeTutor'])->name('become.tutor');
     
-    Route::get('u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
+    Route::get('/u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
 
 });
 
