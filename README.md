@@ -1,66 +1,171 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# eDoktrina - Online Platforma za Učenje
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+eDoktrina je moderna web aplikacija za online učenje koja povezuje studente s instruktorima. Aplikacija posebno naglašava AI-asistiranu nastavu i pružanje obrazovnih materijala te generiranje materijala za ponavljanje.
 
-## About Laravel
+## Tehnologije
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend**: Laravel PHP Framework
+- **Frontend**: Blade Template Engine, TailwindCSS s DaisyUI pluginom
+- **JavaScript**: jQuery
+- **Autentikacija**: Laravel Sanctum
+- **Autorizacija**: Spatie Permission Package
+- **AI Integracija**: OpenAI API
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Značajke
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Za Studente
+- 📚 AI Chat Asistent za učenje
+- 📖 Pristup obrazovnim materijalima i skriptama
+- 👨‍🏫 Pronalaženje i rezerviranje instrukcija
+- 💬 Real-time komunikacija s instruktorima
+- 🎯 Personalizirana putanja učenja
 
-## Learning Laravel
+### Za Instruktore
+- 👩‍🏫 Kreiranje i upravljanje gradivom
+- 📅 Raspoređivanje instrukcija
+- 💰 Praćenje prihoda
+- 📊 Analitika učeničkog napredka
+- ⭐ Sustav recenzija
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Administrativne Funkcije
+- 🔑 Upravljanje korisnicima i ulogama
+- 📈 Analitička kontrolna ploča
+- 📊 Praćenje aktivnosti platforme
+- ⚙️ Postavke sustava
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Uloge Korisnika
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Aplikacija koristi tri osnovne uloge:
+- **user**: Osnovni korisnici/studenti
+- **tutor**: Instruktori
+- **admin**: Administratori
 
-## Laravel Sponsors
+Uloge su implementirane koristeći Spatie Permission paket.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Sigurnost
 
-### Premium Partners
+- CSRF zaštita na svim formama
+- Validacija svih korisničkih unosa
+- Autorizacija za sve osjetljive operacije
+- Sigurno skladište dokumenata i slika
+- Rate limiting za API zahtjeve
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Struktura Baze Podataka
 
-## Contributing
+### Ključne Tablice
+- `users` - Korisnici sustava
+- `subjects` - Predmeti/teme
+- `chat_sessions` - AI chat sesije
+- `chat_messages` - Poruke u AI chatu
+- `roles` & `permissions` - Spatie uloge i dozvole
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API Krajnje Točke
 
-## Code of Conduct
+### Chat API
+- `POST /chat/messages` - Slanje poruke
+- `PATCH /chat/messages/{message}` - Uređivanje poruke
+- `GET /chat/session/{session}/status` - Status sesije
+- `POST /chat/session/{session}/retry` - Ponovno pokušaj
+- `POST /chat/session/{session}/restart` - Restart sesije
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Web Rute
+- `/` - Početna stranica
+- `/login` - Prijava
+- `/register` - Registracija
+- `/chat` - AI Chat interface
+- `/admin/*` - Admin panel
+- `/u/{username}` - Korisnički profili
 
-## Security Vulnerabilities
+## Postavljanje
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Zahtjevi
+- PHP 8.1+
+- Composer
+- Node.js & NPM
+- MySQL/PostgreSQL
+- OpenAI API ključ
 
-## License
+### Instalacija
+1. Klonirajte repozitorij
+2. Kopirajte `.env.example` u `.env` i postavite varijable okruženja
+3. Instalirajte PHP ovisnosti: `composer install`
+4. Instalirajte JS ovisnosti: `npm install`
+5. Generirajte ključ aplikacije: `php artisan key:generate`
+6. Pokrenite migracije: `php artisan migrate`
+7. Seedajte osnovne podatke: `php artisan db:seed`
+8. Kreirajte simboličku poveznicu za storage: `php artisan storage:link`
+9. Kompajlirajte assets: `npm run build`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Konfiguracija
+
+#### OpenAI API
+Postavite u `.env` datoteku:
+```
+OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=gpt-4o
+```
+
+#### Email
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+```
+
+## Razvoj
+
+### Kompiliranje Assets-a
+```bash
+# Development
+npm run dev
+
+# Production
+npm run build
+
+# Watch mode
+npm run watch
+```
+
+### Pokretanje Queues
+```bash
+php artisan queue:work
+```
+
+### Testiranje
+```bash
+php artisan test
+```
+
+## Sigurnosne Napomene
+
+- Svi korisnici moraju potiditi email prije pristupa sustavu
+- Admin korisnici imaju potpunu kontrolu nad sustavom
+- Osjetljivi dokumenti se skladište u privatnom storage direktoriju
+- Rate limiting je primijenjen na sve kritične API krajnje točke
+
+## Arhitektura
+
+Aplikacija slijedi MVC obrazac:
+- **Controllers**: Upravljanje logikom aplikacije
+- **Models**: Eloquent ORM modeli
+- **Views**: Blade template za UI
+- **Policies**: Autorizacijska logika
+- **Jobs**: Background taskovi (OpenAI processing)
+
+## Doprinosite
+
+Da biste doprinijeli projektu:
+1. Forkajte repozitorij
+2. Kreirajte feature branch
+3. Commitajte promjene
+4. Otvorite pull request
+
+
+
+
+
+---
+
+Razvijeno s ❤️ u Hrvatskoj
