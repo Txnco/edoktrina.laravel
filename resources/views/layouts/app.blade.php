@@ -1,7 +1,12 @@
 @extends('layouts.base')
 
 @section('content')
-    @include('partials.header')
+
+    @isset($invertedHeader)
+        <div class="absolute inset-0 z-0">@yield('landingGradient')</div>
+    @endisset
+
+    @include('partials.header' , ['inverted' => $invertedHeader ?? false])
 
 
     @yield('main-content')

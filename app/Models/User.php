@@ -65,4 +65,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(){
         $this->notify(new VerifyEmail);
     }
+
+     /**
+     * One‐to‐one tutor application.
+     */
+    public function tutorApplication()
+    {
+        return $this->hasOne(\App\Models\TutorApplication::class, 'user_id');
+    }
 }

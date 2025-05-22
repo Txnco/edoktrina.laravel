@@ -14,7 +14,7 @@ class ProfileController extends Controller
         $user = User::where('username', $username)->firstOrFail();
 
         if (!$user) {
-            return redirect()->route('home');
+            return redirect()->route('landing.page');
         }
 
         // Check if the logged-in user is viewing their own profile

@@ -53,6 +53,10 @@ class AdminDashboardController extends Controller
         return round((($currentMonthUsers - $lastMonthUsers) / $lastMonthUsers) * 100, 1) . '%';
     }
 
+    public function tutorApplicationCount() {
+        $tutorApplicationCount = User::whereHas('tutorApplication')->count();
+        return response()->json(['count' => $tutorApplicationCount]);
+    }
   
 
 }

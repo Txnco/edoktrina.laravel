@@ -51,3 +51,170 @@
     box-shadow: 0 0 0 30px #2d3748 inset !important;
     text-fill-color: #fff !important;
 }
+
+
+ /* Your existing pulse animation */
+ .animate-pulse {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .animate-pulse div {
+    animation: ripple 1.5s infinite;
+    animation-delay: calc(var(--i) * 0.3s);
+  }
+
+  @keyframes ripple {
+    0% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+  }
+
+ /* Blob shape */
+ .rounded-blob {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  /* Smooth shifting gradient animation */
+  @keyframes gradient-shift {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      filter: hue-rotate(0deg);
+    }
+    33% {
+      transform: translate(-50%, -50%) rotate(120deg) scale(1.1);
+      filter: hue-rotate(30deg);
+    }
+    67% {
+      transform: translate(-50%, -50%) rotate(240deg) scale(1);
+      filter: hue-rotate(60deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg) scale(1.1);
+      filter: hue-rotate(0deg);
+    }
+  }
+  
+  /* Floating motion animation */
+  @keyframes gradient-float {
+    0% {
+      transform: translate(-5%, -5%);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translate(5%, 5%);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-5%, -5%);
+      opacity: 0.4;
+    }
+  }
+  
+  /* Blob morphing animation */
+  @keyframes blob-morph {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(0, 0) rotate(0deg);
+      filter: hue-rotate(0deg);
+    }
+    25% {
+      border-radius: 40% 60% 70% 30% / 30% 40% 60% 70%;
+      transform: translate(-5px, 5px) rotate(5deg);
+      filter: hue-rotate(90deg);
+    }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 40%;
+      transform: translate(5px, -5px) rotate(0deg);
+      filter: hue-rotate(180deg);
+    }
+    75% {
+      border-radius: 60% 40% 30% 70% / 40% 50% 60% 50%;
+      transform: translate(5px, 5px) rotate(-5deg);
+      filter: hue-rotate(270deg);
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(0, 0) rotate(0deg);
+      filter: hue-rotate(360deg);
+    }
+  }
+  
+  .animate-gradient-shift {
+    animation: gradient-shift 20s infinite ease-in-out;
+    transform-origin: center center;
+  }
+  
+  .animate-gradient-float {
+    animation: gradient-float 15s infinite ease-in-out;
+  }
+  
+  .animate-blob-morph {
+    animation: blob-morph 25s infinite ease-in-out;
+  }
+  
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-3000 {
+    animation-delay: 3s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  
+  .animation-delay-5000 {
+    animation-delay: 5s;
+  }
+  
+  .animation-delay-6000 {
+    animation-delay: 6s;
+  }
+  
+  .animation-delay-7000 {
+    animation-delay: 7s;
+  }
+  
+  .animation-delay-8000 {
+    animation-delay: 8s;
+  }
+
+   /* fade‐in keyframes */
+  @keyframes fadeIn {
+    0%   { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* default fade‐in */
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 2s ease-out forwards;
+  }
+
+  /* slower fade‐in */
+  .animate-fade-in-slow {
+    opacity: 0;
+    animation: fadeIn 4s ease-out forwards;
+  }
+
+  /* animation‐delay helpers */
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-500 { animation-delay: 0.5s; }

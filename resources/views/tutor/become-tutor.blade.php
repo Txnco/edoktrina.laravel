@@ -8,6 +8,17 @@
          <h1 class="text-3xl md:text-4xl font-bold text-base-content mb-3">Postani instruktor</h1>
          <p class="text-base-content/70 max-w-2xl mx-auto">Pridruži se našoj zajednici instruktora i podijeli svoje znanje. Pomozi učenicima da ostvare svoje ciljeve i zaradi pritom.</p>
       </div>
+      
+        @if ($errors->any())
+             <div class="alert alert-error shadow-lg mb-6">
+                <div>
+                 <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h1m0 4h1m-1-4V7m0 9v2m0-11a9 9 0 100 18 9 9 0 000-18z" />
+                 </svg>
+                 <span>{{ $errors->first() }}</span>
+                </div>
+             </div>
+             @endif
 
       <div class="w-full mb-8">
          <ul class="steps steps-horizontal w-full">
@@ -22,7 +33,7 @@
      <!-- Application Form -->
      <div class="card shadow-xl bg-base-100">
          <div class="card-body">
-             <form id="tutorApplicationForm" method="POST" action="" enctype="multipart/form-data">
+             <form id="tutorApplicationForm" method="POST" action="{{ route('tutor.store') }}" enctype="multipart/form-data">
                  @csrf
                  
                  <!-- Step 1: Osobne informacije -->
@@ -60,6 +71,7 @@
                                      </label>
                                      <input type="text" value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" 
                                             disabled class="input input-bordered input-disabled">
+                                        
                                  </div>
 
                                  <div class="form-control">
@@ -79,25 +91,7 @@
                                             class="input input-bordered">
                                  </div>
 
-                                 <div class="grid grid-cols-2 gap-4">
-                                     <div class="form-control">
-                                         <label class="label">
-                                             <span class="label-text">Grad</span>
-                                         </label>
-                                         <input type="text" name="city" placeholder="Unesite grad" 
-                                                value="{{ old('city') }}"
-                                                class="input input-bordered" required>
-                                     </div>
-
-                                     <div class="form-control">
-                                         <label class="label">
-                                             <span class="label-text">Županija</span>
-                                         </label>
-                                         <input type="text" name="region" placeholder="Unesite regiju" 
-                                                value="{{ old('region') }}"
-                                                class="input input-bordered" required>
-                                     </div>
-                                 </div>
+                               
 
                                  <div class="form-control">
                                      <label class="label">
@@ -257,8 +251,7 @@
                                  <p><strong>Ime:</strong> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
                                  <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
                                  <p><strong>Telefon:</strong> <span id="review-phone"></span></p>
-                                 <p><strong>Grad:</strong> <span id="review-city"></span></p>
-                                 <p><strong>Regija:</strong> <span id="review-region"></span></p>
+                               
                                  <p><strong>Biografija:</strong> <span id="review-biography"></span></p>
                                  <button type="button" class="btn btn-outline btn-xs mt-2" onclick="goToStep(1)">Uredi</button>
                              </div>
@@ -296,6 +289,7 @@
                          </div>
                      </div>
                  </div>
+
                  
                  <!-- Navigation buttons -->
                  <div class="flex justify-between mt-8">
@@ -601,8 +595,6 @@
    function updateReviewSection() {
        // Update personal info
        $('#review-phone').text($('input[name="phone"]').val() || 'Nije navedeno');
-       $('#review-city').text($('input[name="city"]').val());
-       $('#review-region').text($('input[name="region"]').val());
        $('#review-biography').text($('textarea[name="biography"]').val());
        
        // Update education

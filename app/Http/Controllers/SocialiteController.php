@@ -59,7 +59,7 @@ class SocialiteController extends Controller
             // Finally, login user clearly
             Auth::login($user);
     
-            return redirect()->route('home');
+            return redirect()->route('landing.page');
         } catch (Exception $e) {
             return redirect()->route('login')->withErrors([
                 'unsuccessful' => 'Prijava preko Google računa nije uspela.'

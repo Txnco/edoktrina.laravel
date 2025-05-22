@@ -1,41 +1,38 @@
+@php($invertedHeader = true)
+
 @extends('layouts.app')
 
 @section('main-content')
 
-
+@section('landingGradient')
   <div class="absolute inset-0 overflow-hidden">    
     <!-- Main gradient container -->
     <div class="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2">
       <!-- Primary gradient layers with theme-responsive colors -->
-      <div class="absolute inset-0 bg-gradient-to-br from-primary/50 to-secondary/50 animate-gradient-shift opacity-70"></div>
-      <div class="absolute inset-0 bg-gradient-to-tr from-secondary/40 to-accent/40 animate-gradient-shift animation-delay-3000 opacity-70"></div>
-      <div class="absolute inset-0 bg-gradient-to-bl from-accent/40 to-primary/40 animate-gradient-shift animation-delay-6000 opacity-80"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/60 to-secondary/60 animate-gradient-shift opacity-70"></div>
+      <div class="absolute inset-0 bg-gradient-to-tr from-secondary/60 to-accent/60 animate-gradient-shift animation-delay-3000 opacity-60 animate-fade-in delay-300"></div>
       
       <!-- Additional color layers for richness -->
-      <div class="absolute inset-0 bg-gradient-to-r from-purple-500/40 to-violet-600/40 animate-gradient-float opacity-40"></div>
-      <div class="absolute inset-0 bg-gradient-to-l from-blue-500/40 to-pink-500/40 animate-gradient-float animation-delay-4000 opacity-70"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-purple-700/60 to-violet-600/60 animate-gradient-float opacity-40"></div>
+      <div class="absolute inset-0 bg-gradient-to-l from-blue-700/60 to-pink-600/60 animate-gradient-float animation-delay-4000 opacity-60 animate-fade-in delay-300"></div>
       
       <!-- 8 Fluid Shapes -->
-      <div class="absolute top-[10%] left-[20%] w-[30%] h-[30%] rounded-blob bg-gradient-to-r from-indigo-500/30 to-purple-500/30 animate-blob-morph animation-delay-1000"></div>
+      <div class="absolute top-[10%] left-[20%] w-[30%] h-[30%] rounded-blob bg-gradient-to-r from-indigo-700/30 to-purple-600/30 animate-blob-morph animation-delay-1000"></div>
       
-      <div class="absolute top-[60%] left-[10%] w-[25%] h-[25%] rounded-blob bg-gradient-to-r from-blue-500/30 to-cyan-500/30 animate-blob-morph animation-delay-2000"></div>
+      <div class="absolute top-[60%] left-[10%] w-[25%] h-[25%] rounded-blob bg-gradient-to-r from-blue-700/30 to-cyan-600/30 animate-blob-morph animation-delay-2000 animate-fade-in delay-300"></div>
       
-      <div class="absolute top-[30%] left-[60%] w-[35%] h-[35%] rounded-blob bg-gradient-to-r from-emerald-500/30 to-teal-500/30 animate-blob-morph animation-delay-3000"></div>
+      <div class="absolute top-[70%] left-[60%] w-[20%] h-[20%] rounded-blob bg-gradient-to-r from-rose-700/30 to-pink-600/30 animate-blob-morph animation-delay-4000 animate-fade-in delay-300"></div>
       
-      <div class="absolute top-[70%] left-[60%] w-[20%] h-[20%] rounded-blob bg-gradient-to-r from-rose-500/30 to-pink-500/30 animate-blob-morph animation-delay-4000"></div>
+      <div class="absolute top-[40%] left-[40%] w-[40%] h-[40%] rounded-blob bg-gradient-to-r from-amber-700/20 to-orange-600/20 animate-blob-morph animation-delay-5000 animate-fade-in delay-300"></div>
       
-      <div class="absolute top-[40%] left-[40%] w-[40%] h-[40%] rounded-blob bg-gradient-to-r from-amber-500/20 to-orange-500/20 animate-blob-morph animation-delay-5000"></div>
-      
-      <div class="absolute top-[20%] left-[70%] w-[15%] h-[15%] rounded-blob bg-gradient-to-r from-fuchsia-500/30 to-purple-500/30 animate-blob-morph animation-delay-6000"></div>
-      
-      <div class="absolute top-[80%] left-[30%] w-[22%] h-[22%] rounded-blob bg-gradient-to-r from-sky-500/30 to-indigo-500/30 animate-blob-morph animation-delay-7000"></div>
+      <div class="absolute top-[20%] left-[70%] w-[15%] h-[15%] rounded-blob bg-gradient-to-r from-fuchsia-700/30 to-purple-600/30 animate-blob-morph animation-delay-6000 animate-fade-in delay-300"></div>
       
       
       <!-- Blur overlay for dreamy effect -->
       <div class="absolute inset-0 backdrop-blur-[80px]"></div>
     </div>
   </div>
-
+@endsection
 
 <!-- Hero Section with Abstract Gradient Waves -->
 <section class="relative hero min-h-screen" data-aos="fade-up">
@@ -507,146 +504,4 @@
 </section>
 
 
-<style>
-  /* Your existing pulse animation */
-  .animate-pulse {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .animate-pulse div {
-    animation: ripple 1.5s infinite;
-    animation-delay: calc(var(--i) * 0.3s);
-  }
-
-  @keyframes ripple {
-    0% {
-      opacity: 0.3;
-      transform: scale(0.9);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0.3;
-      transform: scale(0.9);
-    }
-  }
-
- /* Blob shape */
- .rounded-blob {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-
-  /* Smooth shifting gradient animation */
-  @keyframes gradient-shift {
-    0% {
-      transform: translate(-50%, -50%) rotate(0deg) scale(1);
-      filter: hue-rotate(0deg);
-    }
-    33% {
-      transform: translate(-50%, -50%) rotate(120deg) scale(1.1);
-      filter: hue-rotate(30deg);
-    }
-    67% {
-      transform: translate(-50%, -50%) rotate(240deg) scale(1);
-      filter: hue-rotate(60deg);
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(360deg) scale(1.1);
-      filter: hue-rotate(0deg);
-    }
-  }
-  
-  /* Floating motion animation */
-  @keyframes gradient-float {
-    0% {
-      transform: translate(-5%, -5%);
-      opacity: 0.4;
-    }
-    50% {
-      transform: translate(5%, 5%);
-      opacity: 0.6;
-    }
-    100% {
-      transform: translate(-5%, -5%);
-      opacity: 0.4;
-    }
-  }
-  
-  /* Blob morphing animation */
-  @keyframes blob-morph {
-    0% {
-      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      transform: translate(0, 0) rotate(0deg);
-      filter: hue-rotate(0deg);
-    }
-    25% {
-      border-radius: 40% 60% 70% 30% / 30% 40% 60% 70%;
-      transform: translate(-5px, 5px) rotate(5deg);
-      filter: hue-rotate(90deg);
-    }
-    50% {
-      border-radius: 30% 60% 70% 40% / 50% 60% 30% 40%;
-      transform: translate(5px, -5px) rotate(0deg);
-      filter: hue-rotate(180deg);
-    }
-    75% {
-      border-radius: 60% 40% 30% 70% / 40% 50% 60% 50%;
-      transform: translate(5px, 5px) rotate(-5deg);
-      filter: hue-rotate(270deg);
-    }
-    100% {
-      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      transform: translate(0, 0) rotate(0deg);
-      filter: hue-rotate(360deg);
-    }
-  }
-  
-  .animate-gradient-shift {
-    animation: gradient-shift 20s infinite ease-in-out;
-    transform-origin: center center;
-  }
-  
-  .animate-gradient-float {
-    animation: gradient-float 15s infinite ease-in-out;
-  }
-  
-  .animate-blob-morph {
-    animation: blob-morph 25s infinite ease-in-out;
-  }
-  
-  .animation-delay-1000 {
-    animation-delay: 1s;
-  }
-  
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-  
-  .animation-delay-3000 {
-    animation-delay: 3s;
-  }
-  
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-  
-  .animation-delay-5000 {
-    animation-delay: 5s;
-  }
-  
-  .animation-delay-6000 {
-    animation-delay: 6s;
-  }
-  
-  .animation-delay-7000 {
-    animation-delay: 7s;
-  }
-  
-  .animation-delay-8000 {
-    animation-delay: 8s;
-  }
-</style>
 @endsection

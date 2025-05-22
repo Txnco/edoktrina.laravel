@@ -42,7 +42,7 @@ class LoginController extends Controller
                 return redirect()->route('verification.notice')->withErrors(['email' => 'Vaš račun nije potvrđen. Molimo potvrdite svoju e-mail adresu.']);                
             }
     
-            return redirect()->intended('home');
+            return redirect()->intended('/');
         }
     
         // If authentication fails

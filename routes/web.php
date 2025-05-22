@@ -11,15 +11,14 @@ use App\Http\Controllers\Tutor\TutorController;
 use App\Http\Controllers\Subject\SubjectController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Api\ApiChatController;
+use App\Http\Controllers\Script\ScriptController;
 
 use App\Http\Requests\CustomEmailVerification;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', function () { return view('landing-page'); })->name('landing.page');
 
 
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -52,12 +51,18 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
         Route::get('admin/users', [AdminDashboardController::class, 'showUsers'])->name('admin.users');
         Route::get('admin/roles-permissions', [AdminDashboardController::class, 'showRolesPermissions'])->name('admin.roles-permissions');
-        
+
         Route::get('admin/subjects', [SubjectController::class, 'showSubjects'])->name('admin.subjects');
         Route::get('admin/subjects/create', [SubjectController::class, 'create'])->name('admin.subjects.create');
         Route::post('admin/subjects', [SubjectController::class, 'store'])->name('admin.subjects.store');
         Route::put('admin/subjects/{id}', [SubjectController::class, 'update'])->name('admin.subjects.update');
         Route::delete('admin/subjects/{id}', [SubjectController::class, 'delete'])->name('admin.subjects.delete');
+
+        Route::get('admin/tutors/applications', [TutorController::class, 'showApplications'])->name('admin.tutors.applications');
+        Route::get('admin/application/{id}', [TutorController::class, 'showTutorApplication'])->name('admin.tutor.application');
+        Route::post('admin/application/{id}/approve', [TutorController::class, 'approveApplication'])->name('admin.tutor.applications.approve');
+        Route::post('admin/application/{id}/reject', [TutorController::class, 'rejectApplication'])->name('admin.tutor.applications.reject');
+
         
     });
 
@@ -76,7 +81,22 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/postani-instruktor', [TutorController::class, 'showBecomeTutor'])->name('become.tutor');
+    Route::get('/become-tutor', [TutorController::class, 'showBecomeTutor'])->name('tutor.become');
+    Route::post('/become-tutor', [TutorController::class, 'store'])->name('tutor.store');
+    Route::get('/application/status', [TutorController::class, 'applicationStatus'])->name('tutor.application.status');
+    Route::get('/find-tutor', [TutorController::class, 'showFindTutor'])->name('tutor.find');
+
+    Route::get('/download/{application}/{documentType}', [TutorController::class, 'downloadDocument'])->name('tutor.download-document');
+
+    Route::get('/scripts', [ScriptController::class, 'index'])->name('scripts.index');
+    Route::get('/scripts/create', [ScriptController::class, 'create'])->name('scripts.create');
+    Route::post('/scripts', [ScriptController::class, 'store'])->name('scripts.store');
+    Route::get('/scripts/{script}', [ScriptController::class, 'show'])->name('scripts.show');
+    Route::get('/scripts/{script}/edit', [ScriptController::class, 'edit'])->name('scripts.edit');
+    Route::put('/scripts/{script}', [ScriptController::class, 'update'])->name('scripts.update');
+    Route::delete('/scripts/{script}', [ScriptController::class, 'destroy'])->name('scripts.destroy');
+    Route::get('/scripts/{script}/download', [ScriptController::class, 'download'])->name('scripts.download');
+    
     
     Route::get('/u/{username}', [ProfileController::class, 'showProfile'])->where('username', '[A-Za-z0-9-_]+')->name('user.profile');
 

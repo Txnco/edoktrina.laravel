@@ -40,10 +40,10 @@
                                     </span>
                                 </div>
                             </div>
-                            <h2 class="card-title justify-center text-2xl font-bold">Welcome to AI Chat Assistant</h2>
-                            <p class="text-base-content/70 my-4">Start a new conversation with your AI learning assistant or choose a preset topic below.</p>
+                            <h2 class="card-title justify-center text-2xl font-bold">Dobrodošli na personalizirano AI učenje</h2>
+                            <p class="text-base-content/70 my-4">Pokrenite razgovor sa vašim AI asistentom koji će Vam pomoću u svladavanju gradiva</p>
                             
-                            <!-- Preset Topics -->
+                            {{-- <!-- Preset Topics -->
                             <div class="my-4">
                                 <h3 class="font-medium text-sm uppercase text-base-content/60 mb-3">Start with a preset</h3>
                                 <div class="grid grid-cols-1 gap-2">
@@ -67,13 +67,13 @@
                                     </button>
                                 </div>
                             </div>
-                            
+                             --}}
                             <div class="card-actions justify-center mt-2">
                                 <button id="mobile-new-chat-btn" class="btn btn-primary btn-wide">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                                     </svg>
-                                    Start a New Chat
+                                    Pokrenite novi razgovor
                                 </button>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                                 <div class="text-xs text-base-content/60 text-center">
-                                    AI responses are generated based on the latest available data and may not always be accurate.
+                                    Svi odgovori generirani su od strane AI modela. Molimo vas da ih koristite kao pomoć u učenju i provjerite njihovu točnost.
                                 </div>
                             </div>
                         </form>
@@ -199,11 +199,11 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
-                        <span>New Chat</span>
+                        <span>Novi razgovor</span>
                     </button>
                     <div id="subject-dropdown" class="absolute top-full left-0 right-0 mt-1 z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-full hidden">
                         <div class="p-2 text-sm font-medium text-base-content/70 border-b border-base-300">
-                            Select a subject
+                            Odaberite predmet
                         </div>
                         <ul class="menu menu-sm">
                             @foreach ($subjects as $subject)
@@ -218,7 +218,7 @@
                 <!-- Search conversations -->
                 <div class="mb-4">
                     <div class="relative">
-                        <input type="text" placeholder="Search conversations" class="input input-bordered w-full pl-10 input-sm" />
+                        <input type="text" placeholder="Pretražite razgovore" class="input input-bordered w-full pl-10 input-sm" />
                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/60">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -230,7 +230,7 @@
                 <!-- Recent conversations -->
                 <div class="flex-none">
                     <h3 class="font-medium text-xs text-base-content/50 uppercase tracking-wider mb-2 px-2">
-                        Recent Conversations
+                        Nedavni razgovori
                     </h3>
                 </div>
                 
@@ -300,6 +300,7 @@
     </div>
 </template>
 
+
 <template id="ai-message-template">
     <div class="chat chat-start message ai-message" data-id="{id}">
         <div class="chat-image avatar">
@@ -310,9 +311,10 @@
             </div>
         </div>
         <div class="chat-bubble chat-bubble-secondary rounded-2xl max-w-sm md:max-w-xl lg:max-w-2xl">
-            <div class="message-content prose prose-sm max-w-none">{content}</div>
+            <div class="message-content prose prose-sm max-w-none ai-message-content">
+                {content}
+            </div>
         </div>
-        
     </div>
 </template>
 
@@ -434,18 +436,66 @@
 </dialog>
 
 
-    <!-- Add KaTeX for rendering math equations -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
-    />
 
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    /* Math and content styling */
+    .ai-message-content {
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    
+    .ai-message-content .katex {
+        font-size: 1.1em;
+    }
+    
+    .ai-message-content .katex-display {
+        margin: 1em 0;
+        text-align: center;
+    }
+    
+    .ai-message-content strong {
+        font-weight: bold;
+    }
+    
+    .ai-message-content p {
+        margin-bottom: 1em;
+    }
+    
+    .ai-message-content p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .ai-message-content ol {
+        padding-left: 1.5em;
+        margin-bottom: 1em;
+    }
+    
+    .ai-message-content ul {
+        padding-left: 1.5em;
+        margin-bottom: 1em;
+    }
+    
+    .ai-message-content code {
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: monospace;
+    }
+    
+    .ai-message-content pre {
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 1em;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+    
+    .ai-message-content pre code {
+        background-color: transparent;
+        padding: 0;
+    }
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     // Templates
@@ -494,7 +544,7 @@
     const editModal = document.getElementById('edit-modal');
     const shareModal = document.getElementById('share-modal');
 
-    // Configure Marked.js for better Markdown rendering
+
     marked.setOptions({
         renderer: new marked.Renderer(),
         highlight: function(code, lang) {
@@ -508,8 +558,14 @@
         breaks: true,
         sanitize: false,
         smartypants: false,
-        xhtml: false
+        xhtml: false,
+        headerIds: false,
+        mangle: false
     });
+
+    
+
+   
 
     // Update both session title displays (mobile & desktop)
     function updateSessionTitles(title) {
@@ -1184,22 +1240,19 @@
         });
     }
 
+
     function addMessage(message) {
         let template = message.sender === 'user' ? userMessageTemplate : aiMessageTemplate;
         
         let formattedContent = message.content;
-        if (message.sender === 'ai' && message.format === 'markdown') {
-            // Convert markdown to HTML
-            formattedContent = marked.parse(message.content);
-        }
-        
-        // Format the timestamp
-        const timestamp = formatTime(message.created_at);
+        // if (message.sender === 'ai' && message.format === 'markdown') {
+        //     // First, convert markdown to HTML
+        //     formattedContent = marked.parse(message.content);
+        // }
         
         let html = template
             .replace(/\{id\}/g, message.id)
-            .replace(/\{content\}/g, formattedContent)
-            .replace(/\{time\}/g, timestamp);
+            .replace(/\{content\}/g, formattedContent);
         
         if (message.edited_flag) {
             html = html.replace('hidden edited-indicator', 'edited-indicator');
@@ -1210,23 +1263,24 @@
         const messageElement = tempDiv.firstElementChild;
         
         // Add animation class
-        messageElement.classList.add('animate-fade-in');
+        messageElement.classList.add('animate-fade-in-chat');
         
         messagesContainer.appendChild(messageElement);
         
         // Apply additional formatting for AI messages
-        if (message.sender === 'ai' && message.format === 'markdown') {
+        if (message.sender === 'ai') {
             // Render math if KaTeX is available
             if (typeof renderMathInElement === 'function') {
                 setTimeout(() => {
                     renderMathInElement(messageElement.querySelector('.message-content'), {
                         delimiters: [
-                            {left: "$$", right: "$$", display: true},
-                            {left: "$", right: "$", display: false},
                             {left: "\\(", right: "\\)", display: false},
-                            {left: "\\[", right: "\\]", display: true}
+                            {left: "\\[", right: "\\]", display: true},
+                            {left: "$", right: "$", display: false},
+                            {left: "$$", right: "$$", display: true}
                         ],
-                        throwOnError: false
+                        throwOnError: false,
+                        trust: true
                     });
                 }, 0);
             }
@@ -1249,7 +1303,7 @@
         const indicator = tempDiv.firstElementChild;
         
         // Add animation class
-        indicator.classList.add('animate-fade-in');
+        indicator.classList.add('animate-fade-in-chat');
         
         messagesContainer.appendChild(indicator);
         
@@ -1553,7 +1607,7 @@
     // Add animation styles
     const style = document.createElement('style');
     style.textContent = `
-        .animate-fade-in {
+        .animate-fade-in-chat {
             animation: fadeIn 0.3s ease-in-out;
         }
         

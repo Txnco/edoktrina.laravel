@@ -34,6 +34,19 @@
                   <span class="badge badge-primary badge-sm">Pro</span>
                 </a>
               </li>
+              @php
+                  use App\Models\TutorApplication;
+                  $pendingCount = TutorApplication::where('status', 'pending')->count();
+              @endphp
+              <li class="mt-1 mb-1">
+                <a href="{{ route('admin.tutors.applications') }}" class="hover:bg-base-300 {{ request()->routeIs('admin.subjects') ? 'active' : '' }}">
+                  <x-heroicon-o-academic-cap class="w-6 h-6" />
+                  {{ __('Prijave za instruktora') }} 
+                  @if($pendingCount)
+                    <span class="badge badge-error badge-sm">{{ $pendingCount }}</span>
+                  @endif
+                </a>
+              </li>
               <li class="mt-1 mb-1">
                 <a href="{{ route('admin.subjects') }}" class="hover:bg-base-300 {{ request()->routeIs('admin.subjects') ? 'active' : '' }}">
                   <x-heroicon-o-book-open class="w-6 h-6" />

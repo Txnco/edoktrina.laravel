@@ -1,8 +1,13 @@
-<header class="relative z-50">
+@php 
+$inverted = $inverted ? 'text-white' : 'text-base-content';
+@endphp
+
+
+<header class="relative z-50 ">
   <nav class="navbar max-w-7xl mx-auto px-4 py-3">
     <!-- Logo -->
     <div class="navbar-start">
-      <a href="/" class="text-2xl font-bold flex items-center  ">
+      <a href="/" class="text-2xl font-bold flex items-center {{ $inverted }} ">
         {{ config('app.name') }}
       </a>
     </div>
@@ -12,7 +17,7 @@
       <div class="flex items-center space-x-4">
         <!-- Učenje Dropdown -->
         <div class="group relative">
-          <span class="text-base font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
+          <span class="text-base {{ $inverted }}  font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
             Učenje
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -33,7 +38,7 @@
                 {{-- <h4 class="px-4 py-2 text-xs font-semibold uppercase text-base-content/60">Popularne opcije</h4> --}}
                 <ul>
                   <li>
-                    <a href="/skripte" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('scripts.index') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +56,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="/ai-ucenje" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('chat.index') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +81,7 @@
         
         <!-- Instruktori Dropdown -->
         <div class="group relative">
-          <span class="text-base font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
+          <span class="text-base {{ $inverted }} font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
             Instruktori
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -97,7 +102,7 @@
                 <h4 class="px-4 py-2 text-xs font-semibold uppercase text-base-content/60">Opcije</h4>
                 <ul>
                   <li>
-                    <a href="/pronadi-instruktora" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('tutor.find') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,8 +137,31 @@
                       </div>
                     </a>
                   </li>
+                  @hasrole('tutor')
                   <li>
-                    <a href="{{ route('become.tutor') }}" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('tutor.application.status') }}" class="p-3 hover:bg-base-200 block group/item">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998a12.078 12.078 0 01.665-6.479L12 14z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998a12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <div class="font-medium">Provjeri svoju prijavu</div>
+                          <div class="text-xs opacity-70">Pogledaj u kojem je stanju tvoja prijavnica</div>
+                        </div>
+                        <svg class="w-4 h-4 opacity-0 group-hover/item:opacity-100 transition-opacity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                      </div>
+                    </a>
+                  </li>
+                  @endhasrole
+                  @unlessrole('tutor')
+                  <li>
+                    <a href="{{ route('tutor.become') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -152,6 +180,7 @@
                       </div>
                     </a>
                   </li>
+                  @endunlessrole
                 </ul>
               </div>
             </div>
@@ -160,7 +189,7 @@
         
          <!-- Instruktori Dropdown -->
          <div class="group relative">
-          <span class="text-base font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
+          <span class="text-base {{ $inverted }} font-medium px-3 py-2 inline-flex items-center cursor-default select-none">
             Vježbaj
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -181,7 +210,7 @@
                 <h4 class="px-4 py-2 text-xs font-semibold uppercase text-base-content/60">Opcije</h4>
                 <ul>
                   <li>
-                    <a href="/pronadi-instruktora" class="p-3 hover:bg-base-200 block group/item">
+                    <a href="{{ route('tutor.find') }}" class="p-3 hover:bg-base-200 block group/item">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -257,18 +286,18 @@
           </div>
         </div>
 
-        <a href="/o-nama" class="text-base font-medium px-3 py-2">O nama</a>
+        <a href="/o-nama" class="text-base {{ $inverted }} font-medium px-3 py-2">O nama</a>
       </div>
     </div>
 
     <!-- Right Side - CTA Buttons -->
     <div class="navbar-end space-x-4">
       @guest
-        <a href="/login" class="hidden md:flex items-center text-base font-medium hover:text-primary">
+        <a href="/login" class="hidden {{ $inverted }} md:flex items-center text-base font-medium hover:text-primary">
           Prijava
         </a>
         
-        <a href="{{ route('register') }}" class="btn btn-primary rounded-full px-6">
+        <a href="{{ route('register') }}" class="btn btn-primary {{ $inverted }} rounded-full px-6">
           Registracija
         </a>
       @endguest
@@ -322,7 +351,7 @@
               </summary>
               <ul class="pl-4 mt-2">
                 <li>
-                  <a href="/skripte" class="flex items-center gap-3 py-2">
+                  <a href="{{ route('scripts.index') }}" class="flex items-center gap-3 py-2">
                     <div class="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -332,7 +361,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="/ai-ucenje" class="flex items-center gap-3 py-2">
+                  <a href="{{ route('chat.index') }}" class="flex items-center gap-3 py-2">
                     <div class="w-7 h-7 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -358,7 +387,7 @@
               </summary>
               <ul class="pl-4 mt-2">
                 <li>
-                  <a href="/pronadi-instruktora" class="flex items-center gap-3 py-2">
+                  <a href="{{ route('tutor.find') }}" class="flex items-center gap-3 py-2">
                     <div class="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
